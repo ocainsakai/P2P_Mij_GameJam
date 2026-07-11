@@ -122,8 +122,6 @@ MonoBehaviour:
   inflatedDuration: 1.6
   deflateDuration: 0.45
   activeInflationThreshold: 0.82
-  bobHeight: 1.55
-  bobCycleDuration: 2.5
   launchDistance: 5
   launchHeight: 3
   landingHeightOffset: 0.5

@@ -26,10 +26,6 @@ namespace Jam24
         [SerializeField, Min(.05f)] private float deflateDuration = .45f;
         [SerializeField, Range(0f, 1f)] private float activeInflationThreshold = .82f;
 
-        [Header("Vertical Movement")]
-        [SerializeField, Min(0f)] private float bobHeight = .55f;
-        [SerializeField, Min(.1f)] private float bobCycleDuration = 2.5f;
-
         [Header("Parabolic Launch")]
         [SerializeField, Min(.1f)] private float launchDistance = 5f;
         [SerializeField, Min(.1f)] private float launchHeight = 4f;
@@ -43,9 +39,6 @@ namespace Jam24
         private readonly Dictionary<Rigidbody2D, LaunchState> activeLaunches = new();
         private readonly Dictionary<Rigidbody2D, float> nextLaunchTimes = new();
         private Coroutine inflationRoutine;
-        private Rigidbody2D fishBody;
-        private Vector2 bobCenter;
-        private float bobElapsed;
         private float baseBodyRadius;
         private float baseTriggerRadius;
         private Vector2 baseTriggerOffset;
@@ -59,7 +52,6 @@ namespace Jam24
 
         private void Awake()
         {
-            fishBody = GetComponent<Rigidbody2D>();
             if (visualRoot == null && transform.childCount > 0) visualRoot = transform.GetChild(0);
             if (bodyCollider == null) bodyCollider = GetComponent<CircleCollider2D>();
 
@@ -75,20 +67,7 @@ namespace Jam24
 
         private void OnEnable()
         {
-            if (fishBody == null) fishBody = GetComponent<Rigidbody2D>();
-            bobCenter = fishBody != null ? fishBody.position : (Vector2)transform.position;
-            bobElapsed = 0f;
             inflationRoutine = StartCoroutine(InflationCycle());
-        }
-
-        private void FixedUpdate()
-        {
-            if (fishBody == null || bobHeight <= 0f) return;
-
-            bobElapsed += Time.fixedDeltaTime;
-            float angle = bobElapsed / bobCycleDuration * Mathf.PI * 2f;
-            Vector2 target = bobCenter + Vector2.up * (Mathf.Sin(angle) * bobHeight);
-            fishBody.MovePosition(target);
         }
 
         private IEnumerator InflationCycle()
@@ -226,7 +205,6 @@ namespace Jam24
 
             activeLaunches.Clear();
             nextLaunchTimes.Clear();
-            if (fishBody != null) fishBody.position = bobCenter;
             ApplyInflation(0f);
         }
 
@@ -234,8 +212,6 @@ namespace Jam24
         {
             inflateDuration = Mathf.Max(.05f, inflateDuration);
             deflateDuration = Mathf.Max(.05f, deflateDuration);
-            bobHeight = Mathf.Max(0f, bobHeight);
-            bobCycleDuration = Mathf.Max(.1f, bobCycleDuration);
             launchDuration = Mathf.Max(.1f, launchDuration);
             launchDistance = Mathf.Max(.1f, launchDistance);
             launchHeight = Mathf.Max(.1f, launchHeight);
