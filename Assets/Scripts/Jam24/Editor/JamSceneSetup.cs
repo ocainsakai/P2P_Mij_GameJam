@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.IO;
 using UnityEditor;
 using UnityEditor.Events;
 using UnityEditor.SceneManagement;
@@ -15,25 +16,57 @@ namespace Jam24.Editor
         private const string InitPath = "Assets/Scenes/Init.unity";
         private const string HomePath = "Assets/Scenes/Home.unity";
         private const string GameplayPath = "Assets/Scenes/Gameplay.unity";
+        private const string LoadingPath = "Assets/Scenes/Loading.unity";
+        private const string CutscenePath = "Assets/Scenes/Cutscene.unity";
         private const string InitRoot = "Jam24_Managers";
         private const string HomeRoot = "Jam24_HomeUI";
         private const string GameplayRoot = "Jam24_Gameplay";
+        private const string LoadingRoot = "Jam24_Loading";
+        private const string CutsceneRoot = "Jam24_Cutscene";
 
         [MenuItem("Jam24/Build Complete Beach Flow Game _F7")]
         public static void SetupScenes()
         {
+            SetupArtImport();
             SetupInit();
+            SetupLoading();
+            SetupCutscene();
             SetupHome();
             SetupGameplay();
+            SetupBuildSettings();
             AssetDatabase.SaveAssets();
             Debug.Log("Jam24: Beach Flow game scenes built successfully.");
+        }
+
+        private static void SetupArtImport()
+        {
+            const string path = "Assets/Resources/SoleFlow/soleflow_sheet.png";
+            if (AssetImporter.GetAtPath(path) is not TextureImporter importer) return;
+            if (importer.isReadable && importer.textureCompression == TextureImporterCompression.Uncompressed) return;
+            importer.isReadable = true;
+            importer.textureType = TextureImporterType.Default;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
+            importer.mipmapEnabled = false;
+            importer.SaveAndReimport();
         }
 
         [MenuItem("Jam24/Play Gameplay Smoke Test _F8")]
         private static void PlayGameplaySmokeTest()
         {
             if (EditorApplication.isPlaying) EditorApplication.isPlaying = false;
+            PlayerPrefs.SetInt("jam24.automatedSmoke", 1);
+            PlayerPrefs.Save();
             EditorSceneManager.OpenScene(GameplayPath, OpenSceneMode.Single);
+            EditorApplication.isPlaying = true;
+        }
+
+        [MenuItem("Jam24/Play Full Intro Smoke Test _F9")]
+        private static void PlayFullIntroSmokeTest()
+        {
+            if (EditorApplication.isPlaying) EditorApplication.isPlaying = false;
+            PlayerPrefs.DeleteKey(GameFlow.CutsceneSeenKey);
+            PlayerPrefs.Save();
+            EditorSceneManager.OpenScene(InitPath, OpenSceneMode.Single);
             EditorApplication.isPlaying = true;
         }
 
@@ -68,10 +101,21 @@ namespace Jam24.Editor
             Image card = Panel("MenuCard", bg.transform, new Color32(255, 247, 219, 242));
             SetRect(card.rectTransform, new Vector2(.5f, .5f), new Vector2(900, 900), Vector2.zero);
 
-            Text title = Label("Title", card.transform, "BEACH FLOW", 72, FontStyle.Bold, new Color32(10, 103, 145, 255));
+            Text title = Label("Title", card.transform, "SOLE FLOW", 72, FontStyle.Bold, new Color32(10, 103, 145, 255));
             SetRect(title.rectTransform, new Vector2(.5f, 1), new Vector2(800, 100), new Vector2(0, -85));
-            Text subtitle = Label("Subtitle", card.transform, "Connect the summer colors. Let every path flow.", 25, FontStyle.Italic, new Color32(43, 118, 132, 255));
+            Text subtitle = Label("Subtitle", card.transform, "Help Octo guide every lost slipper home.", 25, FontStyle.Italic, new Color32(43, 118, 132, 255));
             SetRect(subtitle.rectTransform, new Vector2(.5f, 1), new Vector2(780, 55), new Vector2(0, -155));
+
+            Image collection = Panel("OctoCollection", bg.transform, new Color32(40, 30, 73, 235));
+            SetRect(collection.rectTransform, new Vector2(.5f,.5f), new Vector2(350,720), new Vector2(675,0));
+            Text collectionTitle = Label("CollectionTitle", collection.transform, "OCTO'S SOLE SHELF", 29, FontStyle.Bold, new Color32(255,210,104,255));
+            SetRect(collectionTitle.rectTransform,new Vector2(.5f,1),new Vector2(310,70),new Vector2(0,-55));
+            Text collectionContent = Label("CollectionContent", collection.transform, "No slippers yet.", 20, FontStyle.Normal, Color.white);
+            SetRect(collectionContent.rectTransform,new Vector2(.5f,.5f),new Vector2(300,560),new Vector2(0,-35));
+            collectionContent.alignment = TextAnchor.UpperLeft;
+            var display = collection.gameObject.AddComponent<CollectionDisplay>();
+            display.Configure(collectionContent);
+            EditorUtility.SetDirty(display);
 
             GameObject grid = new GameObject("LevelGrid", typeof(RectTransform), typeof(GridLayoutGroup));
             grid.transform.SetParent(card.transform, false);
@@ -83,7 +127,7 @@ namespace Jam24.Editor
             layout.constraintCount = 5;
             layout.childAlignment = TextAnchor.MiddleCenter;
 
-            for (int i = 0; i < FlowLevelCatalog.Count; i++)
+            for (int i = 0; i < SoleLevelCatalog.Count; i++)
             {
                 Button button = Button($"Level_{i + 1}", grid.transform, (i + 1).ToString(), new Color32(255, 126, 82, 255), new Vector2(125, 125));
                 Text text = button.GetComponentInChildren<Text>();
@@ -97,10 +141,101 @@ namespace Jam24.Editor
             UnityEventTools.AddPersistentListener(play.onClick, ui.Play);
 
             Button reset = Button("ResetSave", card.transform, "RESET SAVE", new Color32(70, 119, 140, 255), new Vector2(250, 60));
-            SetRect(reset.GetComponent<RectTransform>(), new Vector2(.5f, 0), new Vector2(250, 60), new Vector2(0, 40));
+            SetRect(reset.GetComponent<RectTransform>(), new Vector2(.5f, 0), new Vector2(250, 60), new Vector2(145, 40));
             UnityEventTools.AddPersistentListener(reset.onClick, ui.ResetSave);
 
+            Button story = Button("WatchStory", card.transform, "WATCH STORY", new Color32(255, 151, 73, 255), new Vector2(250, 60));
+            SetRect(story.GetComponent<RectTransform>(), new Vector2(.5f, 0), new Vector2(250, 60), new Vector2(-145, 40));
+            UnityEventTools.AddPersistentListener(story.onClick, ui.ShowCutscene);
+
             SaveClose(scene, close);
+        }
+
+        private static void SetupLoading()
+        {
+            Scene scene = Open(LoadingPath, out bool close);
+            RemoveRoot(scene, LoadingRoot);
+            Camera camera = FindCamera(scene);
+            camera.transform.position = new Vector3(0, 0, -10);
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = new Color32(8, 89, 124, 255);
+            GameObject root = CanvasRoot(LoadingRoot, scene);
+            LoadingController controller = root.AddComponent<LoadingController>();
+
+            Image bg = Panel("BeachBackground", root.transform, new Color32(13, 133, 174, 255));
+            Stretch(bg.rectTransform);
+            AddBackgroundTexture(bg.gameObject);
+            Image shade = Panel("OceanShade", bg.transform, new Color(0f, .12f, .2f, .58f));
+            Stretch(shade.rectTransform);
+
+            Text title = Label("Title", bg.transform, "SOLE FLOW", 70, FontStyle.Bold, Color.white);
+            SetRect(title.rectTransform, new Vector2(.5f, .5f), new Vector2(850, 100), new Vector2(0, 105));
+            Text status = Label("Status", bg.transform, "FOLLOWING THE TIDE...  0%", 23, FontStyle.Bold, new Color32(255, 236, 166, 255));
+            SetRect(status.rectTransform, new Vector2(.5f, .5f), new Vector2(700, 55), new Vector2(0, -105));
+
+            Image track = Panel("ProgressTrack", bg.transform, new Color(1f, 1f, 1f, .3f));
+            SetRect(track.rectTransform, new Vector2(.5f, .5f), new Vector2(620, 34), new Vector2(0, -35));
+            Image fill = Panel("ProgressFill", track.transform, new Color32(255, 126, 82, 255));
+            Stretch(fill.rectTransform);
+            fill.type = Image.Type.Filled;
+            fill.fillMethod = Image.FillMethod.Horizontal;
+            fill.fillOrigin = 0;
+            fill.fillAmount = 0f;
+            controller.Configure(fill, status);
+            EditorUtility.SetDirty(controller);
+            SaveClose(scene, close);
+        }
+
+        private static void SetupCutscene()
+        {
+            Scene scene = Open(CutscenePath, out bool close);
+            RemoveRoot(scene, CutsceneRoot);
+            Camera camera = FindCamera(scene);
+            camera.transform.position = new Vector3(0, 0, -10);
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = new Color32(8, 89, 124, 255);
+            EnsureEventSystem(scene);
+            GameObject root = CanvasRoot(CutsceneRoot, scene);
+            CutsceneController controller = root.AddComponent<CutsceneController>();
+
+            Image bg = Panel("BeachBackground", root.transform, new Color32(13, 133, 174, 255));
+            Stretch(bg.rectTransform);
+            AddBackgroundTexture(bg.gameObject);
+            Image shade = Panel("CinematicShade", bg.transform, new Color(0f, .08f, .15f, .46f));
+            Stretch(shade.rectTransform);
+
+            Image card = Panel("StoryCard", bg.transform, new Color32(255, 248, 219, 242));
+            SetRect(card.rectTransform, new Vector2(.5f, .5f), new Vector2(920, 480), new Vector2(0, -80));
+            CanvasGroup group = card.gameObject.AddComponent<CanvasGroup>();
+            Text title = Label("StoryTitle", card.transform, "OCTO'S TREASURE", 54, FontStyle.Bold, new Color32(10, 103, 145, 255));
+            SetRect(title.rectTransform, new Vector2(.5f, 1), new Vector2(810, 90), new Vector2(0, -85));
+            Text story = Label("StoryBody", card.transform, "Deep below the waves, Octo keeps the ocean's strangest slipper collection.", 30, FontStyle.Italic, new Color32(48, 104, 119, 255));
+            SetRect(story.rectTransform, new Vector2(.5f, .5f), new Vector2(780, 130), new Vector2(0, 20));
+            Text page = Label("Page", card.transform, "1  /  3", 20, FontStyle.Bold, new Color32(255, 126, 82, 255));
+            SetRect(page.rectTransform, new Vector2(.5f, 0), new Vector2(220, 45), new Vector2(0, 48));
+
+            Button next = Button("Next", bg.transform, "NEXT", new Color32(255, 126, 82, 255), new Vector2(250, 72));
+            SetRect(next.GetComponent<RectTransform>(), new Vector2(1, 0), new Vector2(250, 72), new Vector2(-165, 70));
+            UnityEventTools.AddPersistentListener(next.onClick, controller.Next);
+            Button skip = Button("Skip", bg.transform, "SKIP", new Color32(7, 91, 126, 235), new Vector2(180, 60));
+            SetRect(skip.GetComponent<RectTransform>(), new Vector2(0, 1), new Vector2(180, 60), new Vector2(115, -55));
+            UnityEventTools.AddPersistentListener(skip.onClick, controller.Skip);
+
+            controller.Configure(title, story, page, group);
+            EditorUtility.SetDirty(controller);
+            SaveClose(scene, close);
+        }
+
+        private static void SetupBuildSettings()
+        {
+            EditorBuildSettings.scenes = new[]
+            {
+                new EditorBuildSettingsScene(InitPath, true),
+                new EditorBuildSettingsScene(LoadingPath, true),
+                new EditorBuildSettingsScene(CutscenePath, true),
+                new EditorBuildSettingsScene(HomePath, true),
+                new EditorBuildSettingsScene(GameplayPath, true)
+            };
         }
 
         private static void SetupGameplay()
@@ -119,9 +254,9 @@ namespace Jam24.Editor
             SceneManager.MoveGameObjectToScene(root, scene);
             var backdrop = new GameObject("BeachBackdrop", typeof(SpriteRenderer), typeof(BeachBackdrop));
             backdrop.transform.SetParent(root.transform, false);
-            var boardObject = new GameObject("FlowBoard", typeof(GridPuzzle));
+            var boardObject = new GameObject("SoleFlowPuzzle", typeof(SoleFlowPuzzle));
             boardObject.transform.SetParent(root.transform, false);
-            GridPuzzle puzzle = boardObject.GetComponent<GridPuzzle>();
+            SoleFlowPuzzle puzzle = boardObject.GetComponent<SoleFlowPuzzle>();
 
             GameObject canvasRoot = CanvasRoot("GameplayCanvas", scene);
             canvasRoot.transform.SetParent(root.transform, false);
@@ -133,21 +268,26 @@ namespace Jam24.Editor
             top.rectTransform.pivot = new Vector2(.5f, 1);
             top.rectTransform.sizeDelta = new Vector2(0, 105);
             top.rectTransform.anchoredPosition = Vector2.zero;
-            Text level = Label("Level", top.transform, "LEVEL 1 / 10", 30, FontStyle.Bold, Color.white);
-            SetRect(level.rectTransform, new Vector2(.5f, .5f), new Vector2(320, 70), Vector2.zero);
-            Text moves = Label("Moves", top.transform, "MOVES  0", 24, FontStyle.Bold, new Color32(255, 221, 128, 255));
-            SetRect(moves.rectTransform, new Vector2(0, .5f), new Vector2(240, 70), new Vector2(150, 0));
-            Text flows = Label("Flows", top.transform, "FLOWS  0/0", 24, FontStyle.Bold, new Color32(133, 239, 225, 255));
-            SetRect(flows.rectTransform, new Vector2(1, .5f), new Vector2(240, 70), new Vector2(-150, 0));
+            Text level = Label("Level", top.transform, "LEVEL 1/10", 28, FontStyle.Bold, Color.white);
+            SetRect(level.rectTransform, new Vector2(.5f, .5f), new Vector2(600, 70), Vector2.zero);
+            Text actions = Label("Actions", top.transform, "ACTIONS  0", 23, FontStyle.Bold, new Color32(255, 221, 128, 255));
+            SetRect(actions.rectTransform, new Vector2(0, .5f), new Vector2(260, 70), new Vector2(155, 0));
+            Text mode = Label("Mode", top.transform, "CURRENT STARTING", 21, FontStyle.Bold, new Color32(133, 239, 225, 255));
+            SetRect(mode.rectTransform, new Vector2(1, .5f), new Vector2(380, 70), new Vector2(-210, 0));
+
+            Image tutorialPanel = Panel("TutorialPanel", canvasRoot.transform, new Color(0.02f,.18f,.25f,.76f));
+            SetRect(tutorialPanel.rectTransform, new Vector2(.5f,1), new Vector2(950,70), new Vector2(0,-140));
+            Text tutorial = Label("Tutorial", tutorialPanel.transform, "Observe the flow, set up the environment, then RELEASE.", 21, FontStyle.Italic, Color.white);
+            Stretch(tutorial.rectTransform);
 
             Button home = Button("Home", canvasRoot.transform, "HOME", new Color32(8, 98, 132, 245), new Vector2(150, 64));
             SetRect(home.GetComponent<RectTransform>(), new Vector2(0, 0), new Vector2(150, 64), new Vector2(95, 55));
             UnityEventTools.AddPersistentListener(home.onClick, ui.Home);
             Button undo = Button("Undo", canvasRoot.transform, "UNDO", new Color32(8, 98, 132, 245), new Vector2(150, 64));
-            SetRect(undo.GetComponent<RectTransform>(), new Vector2(.5f, 0), new Vector2(150, 64), new Vector2(-85, 55));
+            SetRect(undo.GetComponent<RectTransform>(), new Vector2(.5f, 0), new Vector2(150, 64), new Vector2(-100, 55));
             UnityEventTools.AddPersistentListener(undo.onClick, ui.Undo);
             Button reset = Button("Reset", canvasRoot.transform, "RESET", new Color32(255, 112, 81, 245), new Vector2(150, 64));
-            SetRect(reset.GetComponent<RectTransform>(), new Vector2(.5f, 0), new Vector2(150, 64), new Vector2(85, 55));
+            SetRect(reset.GetComponent<RectTransform>(), new Vector2(.5f, 0), new Vector2(150, 64), new Vector2(100, 55));
             UnityEventTools.AddPersistentListener(reset.onClick, ui.ResetPuzzle);
             Button pause = Button("Pause", canvasRoot.transform, "PAUSE", new Color32(8, 98, 132, 245), new Vector2(150, 64));
             SetRect(pause.GetComponent<RectTransform>(), new Vector2(1, 0), new Vector2(150, 64), new Vector2(-95, 55));
@@ -158,12 +298,14 @@ namespace Jam24.Editor
             SetRect(resume.GetComponent<RectTransform>(), new Vector2(.5f, .5f), new Vector2(300, 75), new Vector2(0, -70));
             UnityEventTools.AddPersistentListener(resume.onClick, ui.Resume);
 
-            GameObject winPopup = Popup(canvasRoot.transform, "WinPopup", "SUNNY SUCCESS!", "All colors are flowing.", out Transform winCard);
+            GameObject winPopup = Popup(canvasRoot.transform, "WinPopup", "SLIPPER COLLECTED!", "Octo has a new treasure for the collection.", out Transform winCard);
+            Text stars = Label("Stars", winCard, "★★★", 44, FontStyle.Bold, new Color32(255,185,60,255));
+            SetRect(stars.rectTransform, new Vector2(.5f,.5f), new Vector2(350,65), new Vector2(0,-10));
             Button next = Button("Next", winCard, "NEXT LEVEL", new Color32(255, 126, 82, 255), new Vector2(300, 75));
             SetRect(next.GetComponent<RectTransform>(), new Vector2(.5f, .5f), new Vector2(300, 75), new Vector2(0, -70));
             UnityEventTools.AddPersistentListener(next.onClick, ui.Next);
 
-            GameObject losePopup = Popup(canvasRoot.transform, "LosePopup", "TRY AGAIN", "Trace a fresh path.", out Transform loseCard);
+            GameObject losePopup = Popup(canvasRoot.transform, "LosePopup", "SOLE STUCK!", "Reset the setup and redirect the current.", out Transform loseCard);
             Button retry = Button("Retry", loseCard, "RETRY", new Color32(255, 126, 82, 255), new Vector2(300, 75));
             SetRect(retry.GetComponent<RectTransform>(), new Vector2(.5f, .5f), new Vector2(300, 75), new Vector2(0, -70));
             UnityEventTools.AddPersistentListener(retry.onClick, ui.Restart);
@@ -171,7 +313,7 @@ namespace Jam24.Editor
             pausePopup.SetActive(false);
             winPopup.SetActive(false);
             losePopup.SetActive(false);
-            ui.Configure(puzzle, moves, flows, level, pausePopup, winPopup, losePopup);
+            ui.Configure(puzzle, actions, mode, level, tutorial, stars, pausePopup, winPopup, losePopup);
             EditorUtility.SetDirty(ui);
             SaveClose(scene, close);
         }
@@ -291,7 +433,10 @@ namespace Jam24.Editor
             Scene loaded = SceneManager.GetSceneByPath(path);
             if (loaded.IsValid() && loaded.isLoaded) { close = false; return loaded; }
             close = true;
-            return EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+            if (File.Exists(path)) return EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+            Scene created = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
+            EditorSceneManager.SaveScene(created, path);
+            return created;
         }
 
         private static void RemoveRoot(Scene scene, string name)

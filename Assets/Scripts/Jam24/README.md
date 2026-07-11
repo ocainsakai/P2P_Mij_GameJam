@@ -1,33 +1,47 @@
-# Beach Flow — 24h Jam Puzzle
+# Sole Flow — Tám Tay Một Dép
 
-Game puzzle nối màu chủ đề bãi biển mùa hè. Kéo từ một chấm màu tới chấm cùng màu, đi qua các ô kề nhau và không chồng lên Flow khác. Nối đủ tất cả cặp để thắng.
+Vertical slice 10 level dựa trên `Assets/Docs/Gameplay Proposal.docx.md`.
 
-## Nội dung hoàn chỉnh
+## Core loop
 
-- 10 level có nghiệm, tăng từ bàn 4x4/2 màu đến 7x7/5 màu.
-- Mouse và touch input.
-- Undo, reset, pause, home, next level.
-- Level select, khóa/mở level, best moves và continue.
-- Menu/HUD/popup responsive cho WebGL.
-- Background bãi biển riêng tại `Assets/Resources/BeachFlow/beach_background.png`.
-- Save bằng `PlayerPrefs`, phù hợp game jam.
+1. **Observe** — đọc đường preview, vị trí dép, hang và các cơ chế.
+2. **Real-time Flow** — dép tự trôi sau chưa đầy một giây; click/tap hoặc phím `1–9` để xoay vòi, mở van, đặt đá, bật bong bóng và mở rong ngay khi nó đang di chuyển.
+3. **React** — mỗi mechanism cho một cửa sổ ngắn để sửa hướng trước khi dép mắc kẹt. Người chơi không được kéo dép trực tiếp.
+4. **Collect** — đưa dép qua chuỗi đẩy → nâng → đổi hướng → bật → vào hang, nhận 1–3 sao và đặt dép lên kệ của Octo.
 
-## Scene
+## 10 level MVP
 
-- `Init`: chứa `Jam24_Managers`, tự chuyển sang Home.
-- `Home`: background, level select 1–10, Continue và Reset Save.
-- `Gameplay`: Flow board, HUD, pause/win popup và navigation.
+1. Một cú đẩy nhẹ — fixed current.
+2. Quay đúng hướng — rotating jet.
+3. Chặn dòng sai — rock diverter.
+4. Đi lên bằng bong bóng — bubble column.
+5. Cú bật của vỏ sò — jet + bounce shell.
+6. Cánh cửa rong biển — seaweed gate + bubbles.
+7. Ngã ba san hô — flow divider + pearl objective.
+8. Đẩy, giữ, nâng — valve + seaweed + bubbles.
+9. Dòng nước theo nhịp — release timing.
+10. Hòn đá trên công tắc — rock-linked pressure switch + rotating jet.
 
-Build Settings đã xếp theo đúng thứ tự `Init -> Home -> Gameplay`.
+## Hệ thống
 
-## Công cụ trong Unity
+- Real-time Flow/Win/Fail modes, interaction trong lúc dép di chuyển, undo và reset nhanh.
+- Mouse, touch, keyboard và interaction rules theo proposal.
+- Deterministic semi-physics để cùng một setup luôn cho kết quả ổn định.
+- Ba sao, best actions, unlock progression và bộ sưu tập 10 chiếc dép.
+- Procedural SFX cho valve, release, success và stuck.
+- Loading async và intro cutscene 3 trang.
+- WebGL-safe scene flow: `Init → Loading → Cutscene → Home → Gameplay`.
 
-- `Jam24 > Build Complete Beach Flow Game` hoặc `F7`: dựng lại toàn bộ scene UI.
-- `Jam24 > Play Gameplay Smoke Test` hoặc `F8`: mở Gameplay và Play.
-- `Jam24 > Validate Complete Game` hoặc `F5`: kiểm tra asset, scene và nghiệm không chồng đường của cả 10 level.
+## Asset
 
-## Điều khiển
+- Background: `Assets/Resources/BeachFlow/beach_background.png`.
+- Sprite sheet tự tạo: `Assets/Resources/SoleFlow/soleflow_sheet.png`.
+- `SoleArt` loại chroma green lúc runtime và cache 8 sprite: Octo, slipper, nest, jet, bubbles, rock, shell, seaweed.
 
-- Kéo chuột/ngón tay giữa hai chấm cùng màu.
-- Kéo ngược lại để backtrack trong đường hiện tại.
-- `Z`: undo, `R`: reset, `Esc`: pause.
+## Debug
+
+- `F5`: validate proposal, 10 level, scene và asset.
+- `F7`: dựng lại toàn bộ scene.
+- `F8`: gameplay smoke test.
+- `F9`: full intro smoke test.
+- `1–9`: tương tác mechanism, `Z`: undo, `R`: reset, `Esc`: pause.

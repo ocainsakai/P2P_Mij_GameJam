@@ -11,6 +11,11 @@ namespace Jam24
     {
         public const string HomeScene = "Home";
         public const string GameplayScene = "Gameplay";
+        public const string LoadingScene = "Loading";
+        public const string CutsceneScene = "Cutscene";
+        public const string CutsceneSeenKey = "jam24.cutsceneSeen";
+
+        public static string PendingScene { get; private set; } = HomeScene;
 
         public static GameFlow Instance { get; private set; }
         public static event Action<GameState> StateChanged;
@@ -54,7 +59,7 @@ namespace Jam24
         {
             if (scene.name == "Init")
             {
-                SceneManager.LoadScene(HomeScene);
+                RequestScene(PlayerPrefs.GetInt(CutsceneSeenKey, 0) == 0 ? CutsceneScene : HomeScene);
                 return;
             }
             SetState(scene.name == GameplayScene ? GameState.Playing : GameState.MainMenu);
@@ -62,14 +67,15 @@ namespace Jam24
 
         public void PlayLevel(int levelIndex)
         {
-            CurrentLevel = Mathf.Clamp(levelIndex, 0, FlowLevelCatalog.Count - 1);
+            CurrentLevel = Mathf.Clamp(levelIndex, 0, SoleLevelCatalog.Count - 1);
             PlayerPrefs.SetInt(SaveData.LastLevelKey, CurrentLevel);
-            SceneManager.LoadScene(GameplayScene);
+            RequestScene(GameplayScene);
         }
 
         public void Continue() => PlayLevel(PlayerPrefs.GetInt(SaveData.LastLevelKey, 0));
-        public void Home() => SceneManager.LoadScene(HomeScene);
-        public void Restart() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        public void Home() => RequestScene(HomeScene);
+        public void ShowCutscene() => RequestScene(CutsceneScene);
+        public void Restart() => RequestScene(GameplayScene);
 
         public void TogglePause()
         {
@@ -94,7 +100,6 @@ namespace Jam24
         public void Win(int moves)
         {
             if (State != GameState.Playing) return;
-            SaveData.CompleteLevel(CurrentLevel, moves);
             SetState(GameState.Win);
         }
 
@@ -103,10 +108,25 @@ namespace Jam24
             if (State == GameState.Playing) SetState(GameState.Lose);
         }
 
+        public void PrepareRetry()
+        {
+            Time.timeScale = 1f;
+            if (SceneManager.GetActiveScene().name == GameplayScene) SetState(GameState.Playing);
+        }
+
         public void NextLevel()
         {
-            if (CurrentLevel + 1 < FlowLevelCatalog.Count) PlayLevel(CurrentLevel + 1);
+            if (CurrentLevel + 1 < SoleLevelCatalog.Count) PlayLevel(CurrentLevel + 1);
             else Home();
+        }
+
+        public void RequestScene(string sceneName)
+        {
+            if (string.IsNullOrWhiteSpace(sceneName) || sceneName == LoadingScene) return;
+            PendingScene = sceneName;
+            Time.timeScale = 1f;
+            Debug.Log($"Beach Flow: transition via Loading to '{sceneName}'.", this);
+            SceneManager.LoadScene(LoadingScene);
         }
 
         private void SetState(GameState value)
