@@ -120,8 +120,10 @@ MonoBehaviour:
   shellRenderer: {fileID: 3171797936672658035}
   flowObject: {fileID: 1874019981399052822}
   waterEffector: {fileID: 808737283226937927}
+  bubbleParticles: {fileID: 0}
   openDuration: 3
   flowStartDelay: 0.2
+  flowDuration: 0
   flowForce: 12
   openSprite: {fileID: 0}
 --- !u!1 &7607104398136328216
@@ -205,8 +207,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 1, g: 0.2636533, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: a1d9f83a372882e4fa7276c36bf4ffa6, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

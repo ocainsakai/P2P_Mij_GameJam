@@ -1,0 +1,572 @@
+fileFormatVersion: 2
+guid: cad411285a71a5241926fedbb621b0dc
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4761960955449838676
+    second: Flow1_0
+  - first:
+      213: -1997374747719575212
+    second: Flow1_1
+  - first:
+      213: 1026269178255424530
+    second: Flow1_2
+  - first:
+      213: 7715281169837857083
+    second: Flow1_3
+  - first:
+      213: -921166754279070397
+    second: Flow1_4
+  - first:
+      213: -1322329596935715627
+    second: Flow1_5
+  - first:
+      213: 7615597155270425319
+    second: Flow1_6
+  - first:
+      213: 2624411411966959291
+    second: Flow1_7
+  - first:
+      213: 1350925159478352595
+    second: Flow1_8
+  - first:
+      213: 1749020071162524822
+    second: Flow1_9
+  - first:
+      213: 1152228587746433458
+    second: Flow1_10
+  - first:
+      213: -5975909044033261632
+    second: Flow1_11
+  - first:
+      213: -257825889382402352
+    second: Flow1_12
+  - first:
+      213: 7077910067694133864
+    second: Flow1_13
+  - first:
+      213: 2549643939300768632
+    second: Flow1_14
+  - first:
+      213: -4418394895604941722
+    second: Flow1_15
+  - first:
+      213: -7514642753573701900
+    second: Flow1_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Flow1_0
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 311
+        width: 592
+        height: 131
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca3f120bdbd1aedb0800000000000000
+      internalID: -4761960955449838676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_1
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 396
+        width: 456
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 459d6dedf36e744e0800000000000000
+      internalID: -1997374747719575212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_2
+      rect:
+        serializedVersion: 2
+        x: 959
+        y: 368
+        width: 249
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21cb8d5516a0e3e00800000000000000
+      internalID: 1026269178255424530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_3
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 388
+        width: 520
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b39127eb85f221b60800000000000000
+      internalID: 7715281169837857083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_4
+      rect:
+        serializedVersion: 2
+        x: 1658
+        y: 435
+        width: 34
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 345eb40b7bb5733f0800000000000000
+      internalID: -921166754279070397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_5
+      rect:
+        serializedVersion: 2
+        x: 1691
+        y: 437
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d449a2dc3426ade0800000000000000
+      internalID: -1322329596935715627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_6
+      rect:
+        serializedVersion: 2
+        x: 1696
+        y: 390
+        width: 269
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ea7e58734900b960800000000000000
+      internalID: 7615597155270425319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_7
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 362
+        width: 19
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbe95c24648cb6420800000000000000
+      internalID: 2624411411966959291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_8
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 366
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3da58d866437fb210800000000000000
+      internalID: 1350925159478352595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_9
+      rect:
+        serializedVersion: 2
+        x: 699
+        y: 371
+        width: 17
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 694bbaeec74c54810800000000000000
+      internalID: 1749020071162524822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_10
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 317
+        width: 777
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b91da8bbc98dff00800000000000000
+      internalID: 1152228587746433458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_11
+      rect:
+        serializedVersion: 2
+        x: 1533
+        y: 348
+        width: 443
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cf6a5cd26e411da0800000000000000
+      internalID: -5975909044033261632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_12
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 357
+        width: 15
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d6767938b40c6cf0800000000000000
+      internalID: -257825889382402352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_13
+      rect:
+        serializedVersion: 2
+        x: 665
+        y: 287
+        width: 363
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 862e119c4b9c93260800000000000000
+      internalID: 7077910067694133864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_14
+      rect:
+        serializedVersion: 2
+        x: 1682
+        y: 284
+        width: 300
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87bffb977a7226320800000000000000
+      internalID: 2549643939300768632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_15
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 280
+        width: 193
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66c711a8045bea2c0800000000000000
+      internalID: -4418394895604941722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flow1_16
+      rect:
+        serializedVersion: 2
+        x: 1110
+        y: 277
+        width: 529
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f6b64bda30a6b790800000000000000
+      internalID: -7514642753573701900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Flow1_0: -4761960955449838676
+      Flow1_1: -1997374747719575212
+      Flow1_10: 1152228587746433458
+      Flow1_11: -5975909044033261632
+      Flow1_12: -257825889382402352
+      Flow1_13: 7077910067694133864
+      Flow1_14: 2549643939300768632
+      Flow1_15: -4418394895604941722
+      Flow1_16: -7514642753573701900
+      Flow1_2: 1026269178255424530
+      Flow1_3: 7715281169837857083
+      Flow1_4: -921166754279070397
+      Flow1_5: -1322329596935715627
+      Flow1_6: 7615597155270425319
+      Flow1_7: 2624411411966959291
+      Flow1_8: 1350925159478352595
+      Flow1_9: 1749020071162524822
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

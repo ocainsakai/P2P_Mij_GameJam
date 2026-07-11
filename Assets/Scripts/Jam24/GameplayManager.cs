@@ -12,8 +12,8 @@ namespace Jam24
         [Header("Levels")]
         [SerializeField] private GameObject[] levelPrefabs;
         [SerializeField] private Transform levelContainer;
-        [FormerlySerializedAs("cam")]
-        [SerializeField] private Camera gameplayCamera;
+        // [FormerlySerializedAs("cam")]
+        // [SerializeField] private Camera gameplayCamera;
 
         [Header("Actors")]
         [SerializeField] private GameObject playerPrefab;
@@ -31,17 +31,17 @@ namespace Jam24
         private LevelDefinition activeDefinition;
         private Coroutine flipRespawnRoutine;
 
-        private void LateUpdate()
-        {
-            if (gameplayCamera == null || Player == null) return;
+        // private void LateUpdate()
+        // {
+        //     if (gameplayCamera == null || Player == null) return;
 
-            Vector3 cameraPosition = gameplayCamera.transform.position;
-            Vector3 playerPosition = Player.transform.position;
-            gameplayCamera.transform.position = new Vector3(
-                playerPosition.x,
-                playerPosition.y,
-                cameraPosition.z);
-        }
+        //     Vector3 cameraPosition = gameplayCamera.transform.position;
+        //     Vector3 playerPosition = Player.transform.position;
+        //     gameplayCamera.transform.position = new Vector3(
+        //         playerPosition.x,
+        //         playerPosition.y,
+        //         cameraPosition.z);
+        // }
 
         private void Awake()
         {
@@ -100,9 +100,9 @@ namespace Jam24
             Player.name = playerPrefab.name;
             SpawnFlip();
 
-            if (gameplayCamera == null) gameplayCamera = Camera.main;
-            if (gameplayCamera == null)
-                Debug.LogWarning("Gameplay Camera is not assigned; level loaded without camera follow.", this);
+            // if (gameplayCamera == null) gameplayCamera = Camera.main;
+            // if (gameplayCamera == null)
+            //     Debug.LogWarning("Gameplay Camera is not assigned; level loaded without camera follow.", this);
 
             return true;
         }
