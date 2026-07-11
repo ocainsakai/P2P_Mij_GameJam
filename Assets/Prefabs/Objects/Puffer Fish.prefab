@@ -116,8 +116,8 @@ MonoBehaviour:
   visualRenderer: {fileID: 2002}
   bodyCollider: {fileID: 1003}
   topTrigger: {fileID: 3002}
-  deflatedSprite: {fileID: 1529004468571396027, guid: 41060260eaeca4a449f7be4d0383f461, type: 3}
-  inflatedSprite: {fileID: -7913495757009432403, guid: 7a05bce6479403c4fb53eb008fccfba1, type: 3}
+  deflatedSprite: {fileID: 21300000, guid: 41060260eaeca4a449f7be4d0383f461, type: 3}
+  inflatedSprite: {fileID: 21300000, guid: 7a05bce6479403c4fb53eb008fccfba1, type: 3}
   spriteSwapThreshold: 0.5
   deflatedScale: {x: 0.72, y: 0.72, z: 1}
   inflatedScale: {x: 1.2, y: 1.2, z: 1}
@@ -272,7 +272,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 7
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 1529004468571396027, guid: 41060260eaeca4a449f7be4d0383f461, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 41060260eaeca4a449f7be4d0383f461, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
