@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 42682d88d7897604fb024eddb93b1045
+guid: 79d6d72e64deebb4da402df973ed0e1e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5208521687230191048
-    second: SharkStalker_0
+      213: -7480099515591783369
+    second: 8-purple-coral-2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 170
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SharkStalker_0
+      name: 8-purple-coral-2_0
       rect:
         serializedVersion: 2
-        x: 5
+        x: 0
         y: 5
-        width: 247
-        height: 121
+        width: 1903
+        height: 821
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8c5164ce0e2684840800000000000000
-      internalID: 5208521687230191048
+      spriteID: 73c84903f19513890800000000000000
+      internalID: -7480099515591783369
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SharkStalker_0: 5208521687230191048
+      8-purple-coral-2_0: -7480099515591783369
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
