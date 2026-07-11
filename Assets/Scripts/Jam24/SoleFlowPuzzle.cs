@@ -12,6 +12,9 @@ namespace Jam24
     /// <summary>Deterministic semi-physics environmental puzzle from the gameplay proposal.</summary>
     public sealed class SoleFlowPuzzle : MonoBehaviour
     {
+        [Header("Runtime Prefabs")]
+        [SerializeField] private GameObject playerPrefab;
+
         public event Action<int> ActionsChanged;
         public event Action<PuzzleMode> ModeChanged;
         public event Action<string> TutorialChanged;
@@ -274,6 +277,7 @@ namespace Jam24
                 label.characterSize = .08f;
                 label.color = Color.white;
                 go.GetComponent<EnvironmentMechanism>().Initialize(this, spec, SoleArt.ForMechanism(spec.type));
+                if (spec.type == MechanismType.SeaweedGate) go.AddComponent<OctopusClimbable>();
                 mechanisms.Add(go.GetComponent<EnvironmentMechanism>());
                 spawned.Add(go);
             }
@@ -281,9 +285,30 @@ namespace Jam24
             slipper = CreateWorldIcon("LostSlipper", Level.start, Color.white, .92f, SoleArt.Get(SoleSprite.Slipper)).transform;
             slipperRenderer = slipper.GetComponent<SpriteRenderer>();
             CreateWorldIcon("OctopusNest", Level.nest, Color.white, 1.45f, SoleArt.Get(SoleSprite.Nest));
-            CreateWorldIcon("OctoEngineer", Level.nest + new Vector2(-1.5f,.25f), Color.white, 1.05f, SoleArt.Get(SoleSprite.Octopus));
+            CreatePlayer();
             AddWorldLabel("OCTO'S NEST", Level.nest + Vector2.down * 1.35f, Color.white, 34);
             AddWorldLabel($"LOST: {Level.slipperName}", Level.start + Vector2.up * 1.05f, new Color32(255,235,173,255), 27);
+            AddWorldLabel("MOVE: WASD / ARROWS    GRIP: SPACE", new Vector2(0f, -4.25f), new Color32(185, 238, 255, 255), 23);
+        }
+
+        private void CreatePlayer()
+        {
+            if (playerPrefab == null)
+            {
+                Debug.LogError("Sole Flow: OctopusPlayer prefab has not been assigned.", this);
+                return;
+            }
+
+            float side = Mathf.Sign(Level.start.x - Level.nest.x);
+            if (Mathf.Approximately(side, 0f)) side = -1f;
+            Vector2 spawnPosition = Level.start + new Vector2(side * .9f, .75f);
+
+            GameObject go = Instantiate(playerPrefab, transform);
+            go.name = "OctopusPlayer";
+            go.transform.position = new Vector3(spawnPosition.x, spawnPosition.y, -.1f);
+            SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
+            if (renderer != null) renderer.sprite = SoleArt.Get(SoleSprite.Octopus);
+            spawned.Add(go);
         }
 
         private void CreateBackdropShapes()
@@ -291,6 +316,7 @@ namespace Jam24
             Sprite square = MakeSprite("Solid", Color.white, 16, false);
             var seabed = CreateWorldIcon("Seabed", new Vector2(0,-3.75f), new Color32(210,165,103,255), 1, square);
             seabed.transform.localScale = new Vector3(15, .8f, 1);
+            seabed.AddComponent<BoxCollider2D>();
 
             var preview = new GameObject("FlowPreview", typeof(LineRenderer));
             preview.transform.SetParent(transform, false);
