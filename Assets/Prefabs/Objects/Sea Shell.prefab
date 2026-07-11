@@ -361,6 +361,26 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 13.960148
       objectReference: {fileID: 0}
+    - target: {fileID: 5612776370770881187, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612776370770881187, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612776370770881187, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612776370770881187, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612776370770881187, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
