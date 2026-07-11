@@ -66,7 +66,7 @@ namespace Jam24
         private void Start()
         {
             if (target != null) return;
-            OctopusPlayerMovement player = FindFirstObjectByType<OctopusPlayerMovement>();
+            OctopusPlayerMovement player = FindAnyObjectByType<OctopusPlayerMovement>();
             if (player != null) Initialize(player.transform);
         }
 
@@ -74,7 +74,7 @@ namespace Jam24
         {
             if (target == null)
             {
-                OctopusPlayerMovement player = FindFirstObjectByType<OctopusPlayerMovement>();
+                OctopusPlayerMovement player = FindAnyObjectByType<OctopusPlayerMovement>();
                 if (player != null) Initialize(player.transform);
                 return;
             }
@@ -274,14 +274,12 @@ namespace Jam24
             Vector3 origin = target != null ? target.position : transform.position;
 
             SharkDetectionZone[] stalkerZones = FindObjectsByType<SharkDetectionZone>(
-                FindObjectsInactive.Exclude,
-                FindObjectsSortMode.None);
+                FindObjectsInactive.Exclude);
             foreach (SharkDetectionZone zone in stalkerZones)
                 ConsiderActivationZone(zone.transform, origin, ref closestDistance);
 
             ThiefSharkDetectionZone[] thiefZones = FindObjectsByType<ThiefSharkDetectionZone>(
-                FindObjectsInactive.Exclude,
-                FindObjectsSortMode.None);
+                FindObjectsInactive.Exclude);
             foreach (ThiefSharkDetectionZone zone in thiefZones)
                 ConsiderActivationZone(zone.transform, origin, ref closestDistance);
 

@@ -334,12 +334,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: a1d9f83a372882e4fa7276c36bf4ffa6, type: 3}
-  m_Color: {r: 0.9987526, g: 1, b: 0, a: 1}
+  m_Sprite: {fileID: -420798900886765409, guid: 12bf0c2001a12a8469e0f9af937c11a0, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3.61, y: 2.45}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -467,11 +467,11 @@ MonoBehaviour:
   flowObject: {fileID: 2375922655158980453}
   waterEffector: {fileID: 4795307845109586747}
   bubbleParticles: {fileID: 7853409100120735360}
-  openDuration: 5
+  openDuration: 3
   flowStartDelay: 0.2
-  flowDuration: 5
+  flowDuration: 0
   flowForce: 10
-  openSprite: {fileID: 21300000, guid: 5d862b9c6442c514c936dfc2cae6b59e, type: 3}
+  openSprite: {fileID: 5488115122556987112, guid: 5ef879cc0ddde234488ff6af596d20ef, type: 3}
 --- !u!50 &4744015342225903945
 Rigidbody2D:
   serializedVersion: 5
@@ -708,7 +708,7 @@ Transform:
   m_GameObject: {fileID: 8233379135289300622}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -969,7 +969,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 0.16
-      minScalar: 0.07
+      minScalar: 0.7
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1344,7 +1344,7 @@ ParticleSystem:
         m_RotationOrder: 4
   ShapeModule:
     serializedVersion: 6
-    enabled: 0
+    enabled: 1
     type: 4
     angle: 25
     length: 5

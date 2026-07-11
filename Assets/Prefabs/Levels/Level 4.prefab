@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1331460749343926752}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.9, y: -2.5, z: 0}
+  m_LocalPosition: {x: -5.03, y: -3.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -114,7 +114,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Jam24.LevelDefinition
   playerSpawn: {fileID: 1293636378065976217}
   legacyFlipSpawn: {fileID: 7863642926480854267}
-  flipSpawns: []
+  flipSpawns:
+  - {fileID: 7863642926480854267}
   finishers:
   - {fileID: 1757589694657994365}
   startingFlipCount: 1
@@ -138,6 +139,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4735091871577910030}
     m_Modifications:
+    - target: {fileID: 3381496568510145761, guid: 4c7878af328a5904ab438db4b768f5a0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.35
+      objectReference: {fileID: 0}
     - target: {fileID: 4967017030177998486, guid: 4c7878af328a5904ab438db4b768f5a0, type: 3}
       propertyPath: m_Name
       value: ENV
@@ -267,17 +272,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4735091871577910030}
     m_Modifications:
+    - target: {fileID: 3363408915909645326, guid: cb5413816dd2c154093f9e4bbb066d94, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 8.899918
+      objectReference: {fileID: 0}
+    - target: {fileID: 3363408915909645326, guid: cb5413816dd2c154093f9e4bbb066d94, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.9499
+      objectReference: {fileID: 0}
     - target: {fileID: 6105045332388292884, guid: cb5413816dd2c154093f9e4bbb066d94, type: 3}
       propertyPath: m_Name
       value: Striped Sea Shell
       objectReference: {fileID: 0}
     - target: {fileID: 8615994246040090082, guid: cb5413816dd2c154093f9e4bbb066d94, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.34392
+      value: 5.31
       objectReference: {fileID: 0}
     - target: {fileID: 8615994246040090082, guid: cb5413816dd2c154093f9e4bbb066d94, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.12881
+      value: -4.43
       objectReference: {fileID: 0}
     - target: {fileID: 8615994246040090082, guid: cb5413816dd2c154093f9e4bbb066d94, type: 3}
       propertyPath: m_LocalPosition.z
@@ -331,11 +344,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8758540483182120544, guid: 58dbad8245a84434da501ffabd0939a5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.12
+      value: 6.22
       objectReference: {fileID: 0}
     - target: {fileID: 8758540483182120544, guid: 58dbad8245a84434da501ffabd0939a5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.28
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8758540483182120544, guid: 58dbad8245a84434da501ffabd0939a5, type: 3}
       propertyPath: m_LocalPosition.z
