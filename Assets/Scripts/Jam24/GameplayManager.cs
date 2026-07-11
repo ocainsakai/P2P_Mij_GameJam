@@ -20,6 +20,12 @@ namespace Jam24
         [SerializeField] private GameObject flipPrefab;
         [SerializeField, Min(0f)] private float flipRespawnDelay = .75f;
 
+        [Header("Rare Fish School")]
+        [SerializeField] private GameObject fishSchoolPrefab;
+        [SerializeField, Range(0f, 1f)] private float fishSchoolBaseChance = .1f;
+        [SerializeField, Range(0f, 1f)] private float fishSchoolMissBonus = .08f;
+        [SerializeField, Range(0f, 1f)] private float fishSchoolMaximumChance = .6f;
+
         public GameObject CurrentLevel { get; private set; }
         public GameObject Player { get; private set; }
         public GameObject Flip { get; private set; }
@@ -32,6 +38,7 @@ namespace Jam24
         private LevelDefinition activeDefinition;
         private Coroutine flipRespawnRoutine;
         private int nextFlipSpawnIndex;
+        private GameObject activeFishSchool;
 
         // private void LateUpdate()
         // {
@@ -103,6 +110,7 @@ namespace Jam24
             Player = Instantiate(playerPrefab, definition.PlayerSpawn.position, definition.PlayerSpawn.rotation, transform);
             Player.name = playerPrefab.name;
             SpawnFlip();
+            TrySpawnFishSchool(levelIndex);
 
             // if (gameplayCamera == null) gameplayCamera = Camera.main;
             // if (gameplayCamera == null)
@@ -232,6 +240,56 @@ namespace Jam24
             SpawnFlip();
         }
 
+        private void TrySpawnFishSchool(int levelIndex)
+        {
+            if (fishSchoolPrefab == null || Player == null) return;
+
+            bool shouldAppear;
+            float chance;
+            bool reusedLevelResult;
+            if (fishSchoolBaseChance >= .999f)
+            {
+                // A 100% value is commonly used to preview/test the encounter.
+                // It must override a cached miss from an earlier play session.
+                shouldAppear = true;
+                chance = 1f;
+                reusedLevelResult = false;
+            }
+            else if (SaveData.TryGetFishSchoolResult(levelIndex, out bool previousResult))
+            {
+                shouldAppear = previousResult;
+                chance = SaveData.GetFishSchoolNextChance(fishSchoolBaseChance);
+                reusedLevelResult = true;
+            }
+            else
+            {
+                reusedLevelResult = false;
+                chance = Mathf.Clamp(
+                    SaveData.GetFishSchoolNextChance(fishSchoolBaseChance),
+                    fishSchoolBaseChance,
+                    fishSchoolMaximumChance);
+                shouldAppear = UnityEngine.Random.value < chance;
+                float nextChance = shouldAppear
+                    ? fishSchoolBaseChance
+                    : Mathf.Min(fishSchoolMaximumChance, chance + fishSchoolMissBonus);
+                SaveData.SaveFishSchoolResult(levelIndex, shouldAppear, nextChance);
+            }
+
+            string rollDetails = reusedLevelResult ? "reused level result" : $"chance {chance:P0}";
+            Debug.Log($"Fish School for level {levelIndex}: {(shouldAppear ? "appeared" : "missed")} " +
+                      $"({rollDetails}).", this);
+            if (!shouldAppear) return;
+
+            activeFishSchool = Instantiate(
+                fishSchoolPrefab,
+                Player.transform.position,
+                Quaternion.identity,
+                transform);
+            activeFishSchool.name = fishSchoolPrefab.name;
+            FishSchool school = activeFishSchool.GetComponent<FishSchool>();
+            if (school != null) school.Initialize(Player.transform);
+        }
+
         private bool ValidateConfiguration(int levelIndex)
         {
             if (levelPrefabs == null || levelPrefabs.Length == 0)
@@ -276,10 +334,12 @@ namespace Jam24
             if (CurrentLevel != null) Destroy(CurrentLevel);
             if (Player != null) Destroy(Player);
             if (Flip != null) Destroy(Flip);
+            if (activeFishSchool != null) Destroy(activeFishSchool);
             CurrentLevel = null;
             activeDefinition = null;
             Player = null;
             Flip = null;
+            activeFishSchool = null;
         }
 
         private void ClearLevelContainer(Transform container)
