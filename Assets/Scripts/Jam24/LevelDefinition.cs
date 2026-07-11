@@ -13,7 +13,7 @@ namespace Jam24
         [SerializeField] private Transform[] finishers;
 
         [Header("Rules")]
-        [SerializeField, Min(1)] private int startingFlipCount = 3;
+        [SerializeField, Min(1)] public int startingFlipCount = 3;
 
         [Header("Failure")]
         [SerializeField] private Transform[] deadZones;

@@ -114,12 +114,15 @@ namespace Jam24
         public void Win()
         {
             if (State != GameState.Playing) return;
+            Time.timeScale = 0f;
             SetState(GameState.Win);
         }
 
         public void Lose()
         {
-            if (State == GameState.Playing) SetState(GameState.Lose);
+            if (State != GameState.Playing) return;
+            Time.timeScale = 0f;
+            SetState(GameState.Lose);
         }
 
         public void PrepareRetry()
