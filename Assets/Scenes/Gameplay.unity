@@ -685,7 +685,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SOLE STUCK!
+  m_Text: RESCUE FAILED!
 --- !u!222 &251138176
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2000,7 +2000,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Reset the setup and redirect the current.
+  m_Text: Octo was caught. Stay alert and try again.
 --- !u!222 &1117056065
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -185,16 +185,19 @@ namespace Jam24
             if (cutsceneManager != null && attackSequence != null)
                 yield return cutsceneManager.Play(attackSequence);
 
-            if (GameplayManager.Instance != null)
-            {
-                GameplayManager.Instance.LoadCurrentLevel();
-            }
-            else if (bittenPlayer != null)
-            {
-                bittenPlayer.enabled = true;
-            }
+            SetWarningVisible(false);
+            bodyRenderer.color = normalColor;
 
-            ReturnToPatrol();
+            if (GameFlow.Instance != null)
+            {
+                Debug.Log("Shark Stalker: player was bitten. Game over.", this);
+                GameFlow.Instance.Lose();
+            }
+            else
+            {
+                Debug.LogWarning("Shark Stalker could not find GameFlow; pausing as a lose fallback.", this);
+                Time.timeScale = 0f;
+            }
         }
 
         private void CancelWarning()
