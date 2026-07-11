@@ -126,8 +126,8 @@ MonoBehaviour:
   buoyancyLinearDamping: 2
   buoyancyAngularDamping: 1.2
   buoyancyFlowAngle: 0
-  buoyancyFlowMagnitude: 0.6
-  buoyancyFlowVariation: 0.15
+  buoyancyFlowMagnitude: 0
+  buoyancyFlowVariation: 0
   deadZones: []
 --- !u!1001 &3947033259202004864
 PrefabInstance:

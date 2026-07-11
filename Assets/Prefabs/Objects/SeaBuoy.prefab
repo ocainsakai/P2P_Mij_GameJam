@@ -97,5 +97,5 @@ BuoyancyEffector2D:
   m_LinearDamping: 2
   m_AngularDamping: 1.2
   m_FlowAngle: 0
-  m_FlowMagnitude: 0.6
-  m_FlowVariation: 0.15
+  m_FlowMagnitude: 0
+  m_FlowVariation: 0

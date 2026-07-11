@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Jam24
 {
@@ -9,6 +10,11 @@ namespace Jam24
     {
         [SerializeField] private Transform[] layers;
         [SerializeField] private BoxCollider2D flowZone;
+        [SerializeField] private Material fadeMaterial;
+        [SerializeField, Range(.01f, .49f)] private float edgeFade = .18f;
+        [FormerlySerializedAs("fadeAllEdges")]
+        [SerializeField] private bool blurWholeFlow;
+        [SerializeField, Range(.25f, 4f)] private float blurSize = 1.25f;
         [SerializeField] private float speed = .6f;
         [SerializeField] private Vector2 layerSpeedMultiplierRange = new(.75f, 1.35f);
         [SerializeField, Min(.01f)] private float loopWidth = 1f;
@@ -95,6 +101,8 @@ namespace Jam24
         private void OnValidate()
         {
             loopWidth = Mathf.Max(.01f, loopWidth);
+            edgeFade = Mathf.Clamp(edgeFade, .01f, .49f);
+            blurSize = Mathf.Clamp(blurSize, .25f, 4f);
             if (layerSpeedMultiplierRange.x > layerSpeedMultiplierRange.y)
                 layerSpeedMultiplierRange = new Vector2(layerSpeedMultiplierRange.y, layerSpeedMultiplierRange.x);
             layerSpeedMultipliers = null;
@@ -151,6 +159,7 @@ namespace Jam24
 
                 renderer.drawMode = SpriteDrawMode.Tiled;
                 renderer.tileMode = SpriteTileMode.Continuous;
+                if (fadeMaterial != null) renderer.sharedMaterial = fadeMaterial;
                 renderer.size = new Vector2(
                     (zoneWorldWidth + tileWorldWidth * 2f) / targetWorldScale,
                     spriteSize.y);
@@ -167,7 +176,29 @@ namespace Jam24
 
                 startPositions[i] = layer.localPosition;
                 tileWidths[i] = tileLocalWidth;
+                ApplyEdgeFade(renderer);
             }
+        }
+
+        private void ApplyEdgeFade(SpriteRenderer renderer)
+        {
+            float halfWidth = flowZone.size.x * .5f;
+            Vector3 start = transform.TransformPoint(new Vector3(
+                flowZone.offset.x - halfWidth, flowZone.offset.y, 0f));
+            Vector3 end = transform.TransformPoint(new Vector3(
+                flowZone.offset.x + halfWidth, flowZone.offset.y, 0f));
+            Vector3 direction = end - start;
+            float width = Mathf.Max(.01f, direction.magnitude);
+            direction /= width;
+
+            var properties = new MaterialPropertyBlock();
+            properties.SetVector("_FadeOrigin", start);
+            properties.SetVector("_FadeDirection", direction);
+            properties.SetFloat("_FadeLength", width);
+            properties.SetFloat("_FadeDistance", width * edgeFade);
+            properties.SetFloat("_BlurWholeFlow", blurWholeFlow ? 1f : 0f);
+            properties.SetFloat("_BlurSize", blurSize);
+            renderer.SetPropertyBlock(properties);
         }
 
         private void RestorePositions()

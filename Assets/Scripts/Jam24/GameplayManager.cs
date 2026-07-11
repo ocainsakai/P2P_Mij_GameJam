@@ -10,7 +10,8 @@ namespace Jam24
         public static GameplayManager Instance { get; private set; }
 
         [Header("Levels")]
-        [SerializeField] private GameObject[] levelPrefabs;
+        [SerializeField] private LevelCatalog levelCatalog;
+        [SerializeField, HideInInspector] private GameObject[] levelPrefabs;
         [SerializeField] private Transform levelContainer;
         // [FormerlySerializedAs("cam")]
         // [SerializeField] private Camera gameplayCamera;
@@ -30,7 +31,7 @@ namespace Jam24
         public GameObject Player { get; private set; }
         public GameObject Flip { get; private set; }
         public int RemainingFlips { get; private set; }
-        public int LevelCount => levelPrefabs?.Length ?? 0;
+        public int LevelCount => levelCatalog != null ? levelCatalog.Count : levelPrefabs?.Length ?? 0;
         public event Action<int> FlipCountChanged;
 
         private bool levelFinished;
@@ -80,17 +81,18 @@ namespace Jam24
         public bool LoadLevel(int levelIndex)
         {
             if (!ValidateConfiguration(levelIndex)) return false;
+            GameObject levelPrefab = GetLevelPrefab(levelIndex);
 
             ClearRuntimeObjects();
             levelFinished = false;
 
             if (GameFlow.Instance != null)
-                GameFlow.Instance.ConfigureTotalLevels(levelPrefabs.Length);
+                GameFlow.Instance.ConfigureTotalLevels(LevelCount);
 
             Transform levelParent = levelContainer == null ? transform : levelContainer;
             ClearLevelContainer(levelParent);
-            CurrentLevel = Instantiate(levelPrefabs[levelIndex], levelParent);
-            CurrentLevel.name = levelPrefabs[levelIndex].name;
+            CurrentLevel = Instantiate(levelPrefab, levelParent);
+            CurrentLevel.name = levelPrefab.name;
 
             LevelDefinition definition = CurrentLevel.GetComponent<LevelDefinition>();
             if (definition == null)
@@ -159,6 +161,17 @@ namespace Jam24
             return true;
         }
 
+        public bool TryLoseFromSeaweedTrap(GameObject candidate)
+        {
+            if (levelFinished || activeDefinition == null ||
+                !activeDefinition.LoseWhenFlipTrappedBySeaweed || !IsFlip(candidate)) return false;
+
+            levelFinished = true;
+            Debug.Log("A Flip was trapped by seaweed. Level lost.", this);
+            GameFlow.Instance?.Lose();
+            return true;
+        }
+
         /// <summary>
         /// Prevents the current level's Flip from being recreated after a thief
         /// shark has swept through. Loading a level resets this protection.
@@ -197,7 +210,7 @@ namespace Jam24
         }
 
         public bool IsValidLevelIndex(int levelIndex) =>
-            levelPrefabs != null && levelIndex >= 0 && levelIndex < levelPrefabs.Length && levelPrefabs[levelIndex] != null;
+            GetLevelPrefab(levelIndex) != null;
 
         private void HandleFlipFinished()
         {
@@ -205,7 +218,7 @@ namespace Jam24
             levelFinished = true;
 
             if (GameFlow.Instance == null) return;
-            SaveData.CompleteLevel(GameFlow.Instance.CurrentLevel, levelPrefabs.Length);
+            SaveData.CompleteLevel(GameFlow.Instance.CurrentLevel, LevelCount);
             GameFlow.Instance.Win();
         }
 
@@ -292,13 +305,13 @@ namespace Jam24
 
         private bool ValidateConfiguration(int levelIndex)
         {
-            if (levelPrefabs == null || levelPrefabs.Length == 0)
+            if (LevelCount == 0)
             {
-                Debug.LogError("GameplayManager needs at least one level prefab.", this);
+                Debug.LogError("GameplayManager needs a Level Catalog with at least one level prefab.", this);
                 return false;
             }
 
-            if (levelIndex < 0 || levelIndex >= levelPrefabs.Length || levelPrefabs[levelIndex] == null)
+            if (GetLevelPrefab(levelIndex) == null)
             {
                 Debug.LogError($"No level prefab is assigned at index {levelIndex}.", this);
                 return false;
@@ -312,6 +325,17 @@ namespace Jam24
 
             return true;
         }
+
+        private GameObject GetLevelPrefab(int levelIndex)
+        {
+            if (levelCatalog != null)
+                return levelCatalog.TryGetLevel(levelIndex, out GameObject prefab) ? prefab : null;
+
+            return levelPrefabs != null && levelIndex >= 0 && levelIndex < levelPrefabs.Length
+                ? levelPrefabs[levelIndex]
+                : null;
+        }
+
 
         private bool FailLevelLoad(string message)
         {

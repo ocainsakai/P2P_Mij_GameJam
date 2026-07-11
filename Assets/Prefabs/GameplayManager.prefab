@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3e8dc3f99aaf7347a07b6a4d4a89663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jam24.GameplayManager
+  levelCatalog: {fileID: 11400000, guid: fa795874a7af45a08403d17c16cc4eec, type: 2}
   levelPrefabs:
   - {fileID: 6576761964840631136, guid: 1e350e0c6ee0fb84082a962a7f8d0df0, type: 3}
   - {fileID: 6576761964840631136, guid: c4d1f2877e5505a4aa9bec47db9518cf, type: 3}

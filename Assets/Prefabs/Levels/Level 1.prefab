@@ -118,7 +118,8 @@ MonoBehaviour:
   finishers:
   - {fileID: 1757589694657994365}
   startingFlipCount: 1
-  overrideBuoyancy: 0
+  loseWhenFlipTrappedBySeaweed: 0
+  overrideBuoyancy: 1
   buoyancyEffectors:
   - {fileID: 1844533963647282665}
   buoyancySurfaceLevel: 0
@@ -126,8 +127,8 @@ MonoBehaviour:
   buoyancyLinearDamping: 2
   buoyancyAngularDamping: 1.2
   buoyancyFlowAngle: 0
-  buoyancyFlowMagnitude: 0.6
-  buoyancyFlowVariation: 0.15
+  buoyancyFlowMagnitude: 0
+  buoyancyFlowVariation: 0
   deadZones: []
 --- !u!1001 &246209274922204419
 PrefabInstance:
@@ -147,31 +148,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1650080942602151356, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.06287215
+      value: 0.30087456
+      objectReference: {fileID: 0}
+    - target: {fileID: 1650080942602151356, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5468278
       objectReference: {fileID: 0}
     - target: {fileID: 1650080942602151356, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.24338399
+      value: -1.1647136
       objectReference: {fileID: 0}
     - target: {fileID: 2218951180677770351, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_Size.x
-      value: 23.67147
+      value: 11.732459
+      objectReference: {fileID: 0}
+    - target: {fileID: 2218951180677770351, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_Size.y
+      value: 0.7753906
       objectReference: {fileID: 0}
     - target: {fileID: 3546550015818011757, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.06279287
+      value: 0.25085512
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546550015818011757, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2896725
       objectReference: {fileID: 0}
     - target: {fileID: 3546550015818011757, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.24319972
+      value: -0.97157365
       objectReference: {fileID: 0}
     - target: {fileID: 4502284809358830849, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.06279287
+      value: 0.38451537
+      objectReference: {fileID: 0}
+    - target: {fileID: 4502284809358830849, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.9768339
       objectReference: {fileID: 0}
     - target: {fileID: 4502284809358830849, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.24319972
+      value: -1.489246
       objectReference: {fileID: 0}
     - target: {fileID: 5580015502148739258, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_LocalScale.x
@@ -183,7 +200,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5580015502148739258, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.83
+      value: -5.37
       objectReference: {fileID: 0}
     - target: {fileID: 5580015502148739258, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -223,7 +240,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6221988530796265941, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_Size.x
-      value: 23.647482
+      value: 11.065832
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221988530796265941, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_Size.y
+      value: 0.6464844
       objectReference: {fileID: 0}
     - target: {fileID: 7316809441980730342, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_Name
@@ -231,7 +252,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7374715098167957878, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_Size.x
-      value: 23.67147
+      value: 10.34677
+      objectReference: {fileID: 0}
+    - target: {fileID: 7374715098167957878, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_Size.y
+      value: 0.5058594
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

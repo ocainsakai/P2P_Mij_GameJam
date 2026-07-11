@@ -18,6 +18,7 @@ namespace Jam24
 
         [Header("Rules")]
         [SerializeField, Min(1)] public int startingFlipCount = 3;
+        [SerializeField] private bool loseWhenFlipTrappedBySeaweed;
 
         [Header("Runtime Buoyancy")]
         [SerializeField] private bool overrideBuoyancy;
@@ -27,8 +28,8 @@ namespace Jam24
         [SerializeField, Min(0f)] private float buoyancyLinearDamping = 2f;
         [SerializeField, Min(0f)] private float buoyancyAngularDamping = 1.2f;
         [SerializeField] private float buoyancyFlowAngle;
-        [SerializeField] private float buoyancyFlowMagnitude = .6f;
-        [SerializeField, Min(0f)] private float buoyancyFlowVariation = .15f;
+        [SerializeField] private float buoyancyFlowMagnitude;
+        [SerializeField, Min(0f)] private float buoyancyFlowVariation;
 
         [Header("Failure")]
         [SerializeField] private Transform[] deadZones;
@@ -40,6 +41,7 @@ namespace Jam24
                 : legacyFlipSpawn != null ? new[] { legacyFlipSpawn } : System.Array.Empty<Transform>();
         public Transform[] Finishers => finishers;
         public int StartingFlipCount => Mathf.Max(1, startingFlipCount);
+        public bool LoseWhenFlipTrappedBySeaweed => loseWhenFlipTrappedBySeaweed;
         public Transform[] DeadZones => deadZones;
         public IReadOnlyList<BuoyancyEffector2D> BuoyancyEffectors => buoyancyEffectors;
 

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Jam24
 {
@@ -14,6 +16,9 @@ namespace Jam24
         [SerializeField] private Collider2D triggerZone;
         [SerializeField, Range(.05f, 1f)] private float entryVelocityMultiplier = .45f;
         [SerializeField, Min(0f)] private float extraLinearDamping = 6f;
+        [SerializeField, Min(0f)] private float pullToCenterDuration = .25f;
+        [FormerlySerializedAs("trappedYOffset")]
+        [SerializeField] private float trappedXOffset;
 
         private readonly Dictionary<Rigidbody2D, SlowState> slowedBodies = new();
         private readonly HashSet<FlowLayerLooper2D> activeFlows = new();
@@ -31,6 +36,7 @@ namespace Jam24
             public int OverlapCount;
             public bool IsFlip;
             public bool IsHeldFlip;
+            public Tween PullTween;
         }
 
         public void ConfigureTargets(GameObject targetPlayer, GameObject flip)
@@ -141,6 +147,8 @@ namespace Jam24
                 if (body == null || !state.IsHeldFlip) continue;
 
                 state.IsHeldFlip = false;
+                state.PullTween?.Kill();
+                state.PullTween = null;
                 body.constraints = state.OriginalConstraints;
                 body.linearDamping = state.OriginalLinearDamping + extraLinearDamping;
                 body.angularDamping = state.OriginalAngularDamping + extraLinearDamping;
@@ -155,12 +163,37 @@ namespace Jam24
                     HoldFlip(pair.Key, pair.Value);
         }
 
-        private static void HoldFlip(Rigidbody2D body, SlowState state)
+        private void HoldFlip(Rigidbody2D body, SlowState state)
         {
             state.IsHeldFlip = true;
             body.linearVelocity = Vector2.zero;
             body.angularVelocity = 0f;
-            body.constraints = RigidbodyConstraints2D.FreezeAll;
+            state.PullTween?.Kill();
+
+            if (pullToCenterDuration <= 0f)
+            {
+                body.position = new Vector2(transform.position.x + trappedXOffset, body.position.y);
+                body.constraints = RigidbodyConstraints2D.FreezeAll;
+                GameplayManager.Instance?.TryLoseFromSeaweedTrap(body.gameObject);
+            }
+            else
+            {
+                body.constraints = state.OriginalConstraints |
+                                   RigidbodyConstraints2D.FreezePositionY |
+                                   RigidbodyConstraints2D.FreezeRotation;
+                state.PullTween = body.DOMoveX(transform.position.x + trappedXOffset, pullToCenterDuration)
+                    .SetEase(Ease.OutQuad)
+                    .SetTarget(this)
+                    .OnComplete(() =>
+                    {
+                        state.PullTween = null;
+                        if (body != null && state.IsHeldFlip)
+                        {
+                            body.constraints = RigidbodyConstraints2D.FreezeAll;
+                            GameplayManager.Instance?.TryLoseFromSeaweedTrap(body.gameObject);
+                        }
+                    });
+            }
         }
 
         private void OnDisable()
@@ -176,6 +209,8 @@ namespace Jam24
 
         private static void RestoreBody(Rigidbody2D body, SlowState state)
         {
+            state.PullTween?.Kill();
+            state.PullTween = null;
             body.linearDamping = state.OriginalLinearDamping;
             body.angularDamping = state.OriginalAngularDamping;
             body.constraints = state.OriginalConstraints;
@@ -186,6 +221,7 @@ namespace Jam24
         {
             entryVelocityMultiplier = Mathf.Clamp(entryVelocityMultiplier, .05f, 1f);
             extraLinearDamping = Mathf.Max(0f, extraLinearDamping);
+            pullToCenterDuration = Mathf.Max(0f, pullToCenterDuration);
             if (triggerZone != null) triggerZone.isTrigger = true;
         }
     }

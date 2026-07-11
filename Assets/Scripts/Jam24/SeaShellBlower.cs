@@ -9,7 +9,7 @@ namespace Jam24
     /// Local right is the blow direction, so rotate the prefab to aim it.
     /// </summary>
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(BoxCollider2D), typeof(Animator))]
+    [RequireComponent(typeof(Collider2D), typeof(Animator))]
     public sealed class SeaShellBlower : MonoBehaviour
     {
         private static readonly int IsOpenParameter = Animator.StringToHash("IsOpen");
