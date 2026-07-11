@@ -92,13 +92,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2816775922462671578}
   - {fileID: 1757589694657994365}
   - {fileID: 1293636378065976217}
   - {fileID: 7863642926480854267}
   - {fileID: 3961305387235085869}
   - {fileID: 8382208038392713936}
   - {fileID: 3143099660880283799}
-  - {fileID: 2816775922462671578}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5210161435639102178
@@ -251,13 +251,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4735091871577910030}
     m_Modifications:
+    - target: {fileID: 8252211086410370463, guid: 58dbad8245a84434da501ffabd0939a5, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8758540483182120544, guid: 58dbad8245a84434da501ffabd0939a5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.22
+      value: 7.08
       objectReference: {fileID: 0}
     - target: {fileID: 8758540483182120544, guid: 58dbad8245a84434da501ffabd0939a5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.34
+      value: -3.93
       objectReference: {fileID: 0}
     - target: {fileID: 8758540483182120544, guid: 58dbad8245a84434da501ffabd0939a5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -375,6 +379,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4735091871577910030}
     m_Modifications:
+    - target: {fileID: 696728429176709318, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4.730266
+      objectReference: {fileID: 0}
+    - target: {fileID: 696728429176709318, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.313
+      objectReference: {fileID: 0}
+    - target: {fileID: 1650080942602151356, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2733312
+      objectReference: {fileID: 0}
+    - target: {fileID: 1650080942602151356, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.0580907
+      objectReference: {fileID: 0}
+    - target: {fileID: 2218951180677770351, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_Size.x
+      value: 11.409279
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546550015818011757, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.27298653
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546550015818011757, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.0572896
+      objectReference: {fileID: 0}
+    - target: {fileID: 4502284809358830849, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.27298653
+      objectReference: {fileID: 0}
+    - target: {fileID: 4502284809358830849, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.0572896
+      objectReference: {fileID: 0}
     - target: {fileID: 5580015502148739258, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -423,9 +463,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6221988530796265941, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_Size.x
+      value: 11.400753
+      objectReference: {fileID: 0}
     - target: {fileID: 7316809441980730342, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
       propertyPath: m_Name
       value: Sea Shell
+      objectReference: {fileID: 0}
+    - target: {fileID: 7374715098167957878, guid: e560cc6dbc05a8b47b3795b0336228a0, type: 3}
+      propertyPath: m_Size.x
+      value: 11.409279
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
