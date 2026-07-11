@@ -29,6 +29,10 @@ namespace Jam24
         [SerializeField, Min(0.05f)] private float biteDistance = 0.55f;
         [SerializeField, Min(0f)] private float bitePause = 0.35f;
 
+        [Header("Attack Video")]
+        [SerializeField] private CutsceneManager cutsceneManager;
+        [SerializeField] private CutsceneSequence attackSequence;
+
         private OctopusPlayerMovement target;
         private Vector2 patrolOrigin;
         private int patrolDirection = 1;
@@ -51,6 +55,8 @@ namespace Jam24
 
             if (detectionZone == null) detectionZone = GetComponentInChildren<SharkDetectionZone>(true);
             if (warningLabel == null) warningLabel = GetComponentInChildren<TextMesh>(true);
+            if (cutsceneManager == null) cutsceneManager = GetComponent<CutsceneManager>();
+            if (attackSequence == null) attackSequence = GetComponent<CutsceneSequence>();
             detectionZone?.SetOwner(this);
 
             sharkBody.bodyType = RigidbodyType2D.Kinematic;
@@ -175,7 +181,9 @@ namespace Jam24
                 if (playerBody != null) playerBody.linearVelocity = Vector2.zero;
             }
 
-            yield return new WaitForSeconds(bitePause);
+            if (bitePause > 0f) yield return new WaitForSeconds(bitePause);
+            if (cutsceneManager != null && attackSequence != null)
+                yield return cutsceneManager.Play(attackSequence);
 
             if (GameplayManager.Instance != null)
             {

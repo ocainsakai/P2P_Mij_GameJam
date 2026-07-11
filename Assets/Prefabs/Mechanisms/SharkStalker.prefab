@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 361579874244895914}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.25, z: -0.1}
+  m_LocalPosition: {x: 0, y: 0.25, z: -0.1}
   m_LocalScale: {x: 0.22, y: 0.22, z: 0.22}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -198,6 +198,8 @@ GameObject:
   m_Component:
   - component: {fileID: 683433161990663473}
   - component: {fileID: 5843173988471576439}
+  - component: {fileID: 7100000000000000001}
+  - component: {fileID: 7100000000000000002}
   m_Layer: 0
   m_Name: SharkStalker
   m_TagString: Untagged
@@ -245,6 +247,51 @@ MonoBehaviour:
   attackSpeed: 8
   biteDistance: 0.55
   bitePause: 0.35
+  cutsceneManager: {fileID: 7100000000000000001}
+  attackSequence: {fileID: 7100000000000000002}
+--- !u!114 &7100000000000000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4973678172642184353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e3441269974fa89a98ec60bb2a7cf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.CutsceneManager
+--- !u!114 &7100000000000000002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4973678172642184353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6be96f9749498a941b7e164972918b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.CutsceneSequence
+  playbackType: 1
+  timeline: {fileID: 0}
+  videoPlayer: {fileID: 0}
+  videoUrl: Videos/ca-map-lao-toi-3s.mp4
+  videoUrlIsStreamingAssetsPath: 1
+  videoAspectRatio: 4
+  animator: {fileID: 0}
+  animatorTrigger: Play
+  duration: 1
+  presentationRoot: {fileID: 0}
+  hideOnComplete: 1
+  pauseGameplay: 1
+  allowSkip: 0
+  started:
+    m_PersistentCalls:
+      m_Calls: []
+  completed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7000000000000000001
 GameObject:
   m_ObjectHideFlags: 0
