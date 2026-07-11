@@ -14,8 +14,14 @@ namespace Jam24
     {
         [Header("References")]
         [SerializeField] private Transform visualRoot;
+        [SerializeField] private SpriteRenderer visualRenderer;
         [SerializeField] private CircleCollider2D bodyCollider;
         [SerializeField] private CircleCollider2D topTrigger;
+
+        [Header("Visual States")]
+        [SerializeField] private Sprite deflatedSprite;
+        [SerializeField] private Sprite inflatedSprite;
+        [SerializeField, Range(0f, 1f)] private float spriteSwapThreshold = .5f;
 
         [Header("Inflation Cycle")]
         [SerializeField] private Vector3 deflatedScale = new(.72f, .72f, 1f);
@@ -53,6 +59,12 @@ namespace Jam24
         private void Awake()
         {
             if (visualRoot == null && transform.childCount > 0) visualRoot = transform.GetChild(0);
+            if (visualRenderer == null && visualRoot != null)
+                visualRenderer = visualRoot.GetComponent<SpriteRenderer>();
+            if (visualRenderer == null)
+                visualRenderer = GetComponentInChildren<SpriteRenderer>(true);
+            if (deflatedSprite == null && visualRenderer != null)
+                deflatedSprite = visualRenderer.sprite;
             if (bodyCollider == null) bodyCollider = GetComponent<CircleCollider2D>();
 
             baseBodyRadius = bodyCollider != null ? bodyCollider.radius : .55f;
@@ -104,6 +116,13 @@ namespace Jam24
             amount = Mathf.Clamp01(amount);
             Vector3 scale = Vector3.Lerp(deflatedScale, inflatedScale, amount);
             if (visualRoot != null) visualRoot.localScale = scale;
+
+            if (visualRenderer != null)
+            {
+                Sprite stateSprite = amount >= spriteSwapThreshold ? inflatedSprite : deflatedSprite;
+                if (stateSprite != null && visualRenderer.sprite != stateSprite)
+                    visualRenderer.sprite = stateSprite;
+            }
 
             // Keep the physical body aligned with the visible inflated size.
             float colliderScale = Mathf.Lerp(deflatedScale.x, inflatedScale.x, amount);
@@ -215,6 +234,7 @@ namespace Jam24
             launchDuration = Mathf.Max(.1f, launchDuration);
             launchDistance = Mathf.Max(.1f, launchDistance);
             launchHeight = Mathf.Max(.1f, launchHeight);
+            spriteSwapThreshold = Mathf.Clamp01(spriteSwapThreshold);
         }
     }
 }
