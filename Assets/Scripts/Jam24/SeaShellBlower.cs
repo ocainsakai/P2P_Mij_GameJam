@@ -19,10 +19,12 @@ namespace Jam24
         [SerializeField] private SpriteRenderer shellRenderer;
         [SerializeField] private GameObject flowObject;
         [SerializeField] private AreaEffector2D waterEffector;
+        [SerializeField] private ParticleSystem bubbleParticles;
 
         [Header("Activation")]
         [SerializeField, Min(.1f)] private float openDuration = 3f;
         [SerializeField, Min(0f)] private float flowStartDelay = .2f;
+        [SerializeField, Min(0f)] private float flowDuration;
 
         [Header("Water Current")]
         [SerializeField, Min(0f)] private float flowForce = 12f;
@@ -88,8 +90,8 @@ namespace Jam24
             if (delay > 0f) yield return new WaitForSeconds(delay);
             SetFlowActive(true);
 
-            float remaining = openDuration - delay;
-            if (remaining > 0f) yield return new WaitForSeconds(remaining);
+            float activeFlowDuration = flowDuration > 0f ? flowDuration : openDuration - delay;
+            if (activeFlowDuration > 0f) yield return new WaitForSeconds(activeFlowDuration);
 
             SetFlowActive(false);
             IsOpen = false;
@@ -117,12 +119,17 @@ namespace Jam24
         {
             if (flowObject != null) flowObject.SetActive(value);
             else if (waterEffector != null) waterEffector.enabled = value;
+
+            if (bubbleParticles == null) return;
+            if (value) bubbleParticles.Play(true);
+            else bubbleParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
 
         private void OnValidate()
         {
             openDuration = Mathf.Max(.1f, openDuration);
             flowStartDelay = Mathf.Clamp(flowStartDelay, 0f, openDuration);
+            flowDuration = Mathf.Max(0f, flowDuration);
             if (waterEffector != null) waterEffector.forceMagnitude = flowForce;
         }
     }
