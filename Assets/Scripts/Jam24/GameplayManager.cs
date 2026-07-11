@@ -15,6 +15,11 @@ namespace Jam24
         [SerializeField] private Transform levelContainer;
         [FormerlySerializedAs("cam")]
         [SerializeField] private CinemachineCamera gameplayCamera;
+        [SerializeField] private CinemachineTargetGroup cameraTargetGroup;
+        [SerializeField, Min(0f)] private float playerCameraWeight = 1f;
+        [SerializeField, Min(0f)] private float flipCameraWeight = 1f;
+        [SerializeField, Min(0f)] private float playerCameraRadius = 1f;
+        [SerializeField, Min(0f)] private float flipCameraRadius = .6f;
 
         [Header("Actors")]
         [SerializeField] private GameObject playerPrefab;
@@ -31,6 +36,7 @@ namespace Jam24
         private bool levelFinished;
         private LevelDefinition activeDefinition;
         private Coroutine flipRespawnRoutine;
+        private Coroutine deathRoutine;
 
         private void Awake()
         {
@@ -71,16 +77,16 @@ namespace Jam24
             ClearLevelContainer(levelParent);
             CurrentLevel = Instantiate(levelPrefabs[levelIndex], levelParent);
             CurrentLevel.name = levelPrefabs[levelIndex].name;
+            CurrentLevel.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            CurrentLevel.transform.localScale = Vector3.one;
 
             LevelDefinition definition = CurrentLevel.GetComponent<LevelDefinition>();
             if (definition == null)
-            {
-                return FailLevelLoad(
-                    $"Level '{CurrentLevel.name}' needs a LevelDefinition component with explicit references.");
-            }
+                return FailLevelLoad($"Level '{CurrentLevel.name}' needs a LevelDefinition component with explicit references.");
 
             if (!definition.TryValidate(out string definitionError))
                 return FailLevelLoad($"Level '{CurrentLevel.name}' configuration is invalid:\n{definitionError}");
+
             activeDefinition = definition;
             RemainingFlips = definition.StartingFlipCount;
             FlipCountChanged?.Invoke(RemainingFlips);
@@ -88,10 +94,7 @@ namespace Jam24
             Player = Instantiate(playerPrefab, definition.PlayerSpawn.position, definition.PlayerSpawn.rotation, transform);
             Player.name = playerPrefab.name;
             SpawnFlip();
-
-            if (gameplayCamera != null) gameplayCamera.Follow = Player.transform;
-            else Debug.LogWarning("Gameplay Camera is not assigned; level loaded without camera follow.", this);
-
+            SetupCameraTargets();
             return true;
         }
 
@@ -101,6 +104,7 @@ namespace Jam24
             if (candidate != Flip && !candidate.transform.IsChildOf(Flip.transform)) return false;
 
             GameObject lostFlip = Flip;
+            cameraTargetGroup?.RemoveMember(lostFlip.transform);
             Flip = null;
             RemainingFlips = Mathf.Max(0, RemainingFlips - 1);
             FlipCountChanged?.Invoke(RemainingFlips);
@@ -135,8 +139,12 @@ namespace Jam24
         private void SpawnFlip()
         {
             if (activeDefinition == null || levelFinished) return;
+
             Flip = Instantiate(flipPrefab, activeDefinition.FlipSpawn.position, activeDefinition.FlipSpawn.rotation, transform);
             Flip.name = flipPrefab.name;
+
+            foreach (SeaweedTrap2D trap in CurrentLevel.GetComponentsInChildren<SeaweedTrap2D>(true))
+                trap.ConfigureTargets(Player, Flip);
 
             foreach (Transform finisherTransform in activeDefinition.Finishers)
             {
@@ -146,6 +154,28 @@ namespace Jam24
                 if (finishZone == null) finishZone = finisherTransform.gameObject.AddComponent<FinishZone>();
                 finishZone.Configure(Flip, HandleFlipFinished);
             }
+
+            ConfigureDeadZones();
+
+            if (cameraTargetGroup != null)
+            {
+                cameraTargetGroup.AddMember(Flip.transform, flipCameraWeight, flipCameraRadius);
+                cameraTargetGroup.DoUpdate();
+            }
+        }
+
+        private void ConfigureDeadZones()
+        {
+            if (activeDefinition?.DeadZones == null) return;
+
+            foreach (Transform deadZoneTransform in activeDefinition.DeadZones)
+            {
+                Collider2D trigger = deadZoneTransform.GetComponent<Collider2D>();
+                trigger.isTrigger = true;
+                DeadZone deadZone = deadZoneTransform.GetComponent<DeadZone>();
+                if (deadZone == null) deadZone = deadZoneTransform.gameObject.AddComponent<DeadZone>();
+                deadZone.Configure(Player, Flip, HandlePlayerEnteredDeadZone, HandleFlipEnteredDeadZone);
+            }
         }
 
         private IEnumerator RespawnFlip()
@@ -153,6 +183,68 @@ namespace Jam24
             if (flipRespawnDelay > 0f) yield return new WaitForSeconds(flipRespawnDelay);
             flipRespawnRoutine = null;
             SpawnFlip();
+        }
+
+        private void HandleFlipEnteredDeadZone()
+        {
+            if (levelFinished) return;
+            levelFinished = true;
+
+            if (Flip != null)
+            {
+                cameraTargetGroup?.RemoveMember(Flip.transform);
+                if (Flip.TryGetComponent(out Rigidbody2D body)) body.simulated = false;
+                Flip.SetActive(false);
+            }
+
+            GameFlow.Instance?.Lose();
+        }
+
+        private void HandlePlayerEnteredDeadZone()
+        {
+            if (levelFinished) return;
+            levelFinished = true;
+            if (deathRoutine != null) StopCoroutine(deathRoutine);
+            deathRoutine = StartCoroutine(PlayPlayerDeath());
+        }
+
+        private IEnumerator PlayPlayerDeath()
+        {
+            if (Player != null)
+            {
+                cameraTargetGroup?.RemoveMember(Player.transform);
+                if (Player.TryGetComponent(out OctopusPlayerMovement movement)) movement.enabled = false;
+                if (Player.TryGetComponent(out Rigidbody2D body))
+                {
+                    body.linearVelocity = Vector2.zero;
+                    body.angularVelocity = 0f;
+                    body.simulated = false;
+                }
+
+                SpriteRenderer renderer = Player.GetComponentInChildren<SpriteRenderer>();
+                Vector3 initialScale = Player.transform.localScale;
+                Color initialColor = renderer == null ? Color.white : renderer.color;
+                const float duration = .8f;
+                float elapsed = 0f;
+
+                while (elapsed < duration && Player != null)
+                {
+                    elapsed += Time.unscaledDeltaTime;
+                    float progress = Mathf.Clamp01(elapsed / duration);
+                    Player.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, progress);
+                    if (renderer != null)
+                    {
+                        Color color = initialColor;
+                        color.a = 1f - progress;
+                        renderer.color = color;
+                    }
+                    yield return null;
+                }
+            }
+
+            if (Player != null) Player.SetActive(false);
+            deathRoutine = null;
+            GameFlow.Instance?.Lose();
         }
 
         private bool ValidateConfiguration(int levelIndex)
@@ -186,7 +278,7 @@ namespace Jam24
             activeDefinition = null;
             Player = null;
             Flip = null;
-            if (gameplayCamera != null) gameplayCamera.Follow = null;
+            ClearCameraTargets();
             return false;
         }
 
@@ -197,6 +289,13 @@ namespace Jam24
                 StopCoroutine(flipRespawnRoutine);
                 flipRespawnRoutine = null;
             }
+            if (deathRoutine != null)
+            {
+                StopCoroutine(deathRoutine);
+                deathRoutine = null;
+            }
+
+            ClearCameraTargets();
             if (CurrentLevel != null) Destroy(CurrentLevel);
             if (Player != null) Destroy(Player);
             if (Flip != null) Destroy(Flip);
@@ -204,6 +303,46 @@ namespace Jam24
             activeDefinition = null;
             Player = null;
             Flip = null;
+        }
+
+        private void SetupCameraTargets()
+        {
+            if (cameraTargetGroup == null)
+            {
+                var groupObject = new GameObject("GameplayCameraTargetGroup");
+                groupObject.transform.SetParent(transform, false);
+                cameraTargetGroup = groupObject.AddComponent<CinemachineTargetGroup>();
+            }
+
+            ClearCameraTargets();
+            cameraTargetGroup.AddMember(Player.transform, playerCameraWeight, playerCameraRadius);
+            cameraTargetGroup.AddMember(Flip.transform, flipCameraWeight, flipCameraRadius);
+            cameraTargetGroup.RotationMode = CinemachineTargetGroup.RotationModes.Manual;
+            cameraTargetGroup.transform.rotation = Quaternion.identity;
+            cameraTargetGroup.DoUpdate();
+
+            if (gameplayCamera == null)
+                gameplayCamera = FindFirstObjectByType<CinemachineCamera>();
+
+            if (gameplayCamera == null)
+            {
+                Debug.LogWarning("Gameplay Camera is not assigned; level loaded without camera follow.", this);
+                return;
+            }
+
+            gameplayCamera.Follow = cameraTargetGroup.transform;
+            gameplayCamera.Target.CustomLookAtTarget = false;
+            gameplayCamera.PreviousStateIsValid = false;
+            gameplayCamera.UpdateCameraState(Vector3.up, -1f);
+        }
+
+        private void ClearCameraTargets()
+        {
+            if (cameraTargetGroup != null)
+                cameraTargetGroup.Targets.Clear();
+
+            if (gameplayCamera != null)
+                gameplayCamera.PreviousStateIsValid = false;
         }
 
         private void ClearLevelContainer(Transform container)
@@ -214,6 +353,5 @@ namespace Jam24
                 if (child != CurrentLevel) Destroy(child);
             }
         }
-
     }
 }

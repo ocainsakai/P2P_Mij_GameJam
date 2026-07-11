@@ -15,10 +15,14 @@ namespace Jam24
         [Header("Rules")]
         [SerializeField, Min(1)] private int startingFlipCount = 3;
 
+        [Header("Failure")]
+        [SerializeField] private Transform[] deadZones;
+
         public Transform PlayerSpawn => playerSpawn;
         public Transform FlipSpawn => flipSpawn;
         public Transform[] Finishers => finishers;
         public int StartingFlipCount => Mathf.Max(1, startingFlipCount);
+        public Transform[] DeadZones => deadZones;
 
         public bool TryValidate(out string error)
         {
@@ -38,6 +42,19 @@ namespace Jam24
                         problems.AppendLine($"- Finisher element {i} is not assigned.");
                     else if (finishers[i].GetComponent<Collider2D>() == null)
                         problems.AppendLine($"- Finisher '{finishers[i].name}' needs a Collider2D.");
+                }
+            }
+
+            if (deadZones != null)
+            {
+                for (int i = 0; i < deadZones.Length; i++)
+                {
+                    if (deadZones[i] == null)
+                        problems.AppendLine($"- Dead Zone element {i} is not assigned.");
+                    else if (deadZones[i].GetComponent<Collider2D>() == null)
+                        problems.AppendLine($"- Dead Zone '{deadZones[i].name}' needs a Collider2D.");
+                    else if (deadZones[i].TryGetComponent(out DeadZone zone) && zone.Targets == 0)
+                        problems.AppendLine($"- Dead Zone '{deadZones[i].name}' must target Player, Flip, or Both.");
                 }
             }
 
