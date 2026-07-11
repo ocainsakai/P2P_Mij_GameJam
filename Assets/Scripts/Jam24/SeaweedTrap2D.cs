@@ -1,111 +1,113 @@
+using System.Collections.Generic;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace Jam24
 {
+    /// <summary>
+    /// Water drag zone: slows every simulated Rigidbody2D except the player
+    /// while it overlaps the seaweed, then restores its original damping.
+    /// </summary>
     [DisallowMultipleComponent]
     public sealed class SeaweedTrap2D : MonoBehaviour
     {
         [SerializeField] private Collider2D triggerZone;
-        [SerializeField] private Transform holdPoint;
-        [SerializeField] private string inWaterFlowBool = "InWaterFlow";
-        [SerializeField] private bool releaseOnWaterFlow = true;
+        [SerializeField, Range(.05f, 1f)] private float entryVelocityMultiplier = .45f;
+        [SerializeField, Min(0f)] private float extraLinearDamping = 6f;
 
-        private GameObject targetFlip;
-        private Rigidbody2D caughtBody;
-        private Transform originalParent;
-        private int flowCount;
+        private readonly Dictionary<Rigidbody2D, SlowState> slowedBodies = new();
+        private Rigidbody2D seaweedBody;
 
-        public void ConfigureTargets(GameObject targetPlayer, GameObject flip) => targetFlip = flip;
+        private sealed class SlowState
+        {
+            public float OriginalLinearDamping;
+            public float OriginalAngularDamping;
+            public int OverlapCount;
+        }
+
+        // Kept for compatibility with GameplayManager. Seaweed is now generic
+        // and no longer needs explicit Player/Flip references.
+        public void ConfigureTargets(GameObject targetPlayer, GameObject flip)
+        {
+        }
 
         private void Awake()
         {
-            if (triggerZone == null || holdPoint == null)
+            seaweedBody = GetComponent<Rigidbody2D>();
+            if (triggerZone == null) triggerZone = GetComponentInChildren<Collider2D>(true);
+            if (triggerZone == null)
             {
-                Debug.LogError($"Seaweed '{name}' needs Trigger Zone and Hold Point references.", this);
+                Debug.LogError($"Seaweed '{name}' needs a trigger Collider2D.", this);
                 enabled = false;
+                return;
             }
+            triggerZone.isTrigger = true;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (IsFlip(other)) CatchFlip();
-            if (other.GetComponentInParent<AreaEffector2D>() != null)
+            Rigidbody2D body = GetSlowableBody(other);
+            if (body == null) return;
+
+            if (slowedBodies.TryGetValue(body, out SlowState existing))
             {
-                flowCount++;
-                if (releaseOnWaterFlow) ReleaseFlip();
+                existing.OverlapCount++;
+                return;
             }
+
+            var state = new SlowState
+            {
+                OriginalLinearDamping = body.linearDamping,
+                OriginalAngularDamping = body.angularDamping,
+                OverlapCount = 1
+            };
+            slowedBodies.Add(body, state);
+
+            body.linearVelocity *= entryVelocityMultiplier;
+            body.angularVelocity *= entryVelocityMultiplier;
+            body.linearDamping = state.OriginalLinearDamping + extraLinearDamping;
+            body.angularDamping = state.OriginalAngularDamping + extraLinearDamping;
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (other.GetComponentInParent<AreaEffector2D>() == null) return;
-            flowCount = Mathf.Max(0, flowCount - 1);
+            Rigidbody2D body = other.attachedRigidbody;
+            if (body == null || !slowedBodies.TryGetValue(body, out SlowState state)) return;
+
+            state.OverlapCount--;
+            if (state.OverlapCount > 0) return;
+            RestoreBody(body, state);
+            slowedBodies.Remove(body);
         }
 
-        private bool IsFlip(Collider2D other)
+        private Rigidbody2D GetSlowableBody(Collider2D other)
         {
-            if (targetFlip == null || caughtBody != null) return false;
-            GameObject entered = other.attachedRigidbody != null
-                ? other.attachedRigidbody.gameObject
-                : other.gameObject;
-            return entered == targetFlip || entered.transform.IsChildOf(targetFlip.transform);
+            if (other.GetComponentInParent<OctopusPlayerMovement>() != null) return null;
+
+            Rigidbody2D body = other.attachedRigidbody;
+            if (body == null || body == seaweedBody || !body.simulated || body.bodyType == RigidbodyType2D.Static)
+                return null;
+            return body;
         }
 
-        private void CatchFlip()
+        private void OnDisable()
         {
-            originalParent = targetFlip.transform.parent;
-            caughtBody = targetFlip.GetComponent<Rigidbody2D>();
-            if (caughtBody != null)
-            {
-                caughtBody.linearVelocity = Vector2.zero;
-                caughtBody.angularVelocity = 0f;
-                caughtBody.simulated = false;
-            }
-            targetFlip.transform.SetParent(holdPoint, true);
-            targetFlip.transform.SetPositionAndRotation(holdPoint.position, holdPoint.rotation);
-            if (releaseOnWaterFlow && flowCount > 0) ReleaseFlip();
+            foreach (KeyValuePair<Rigidbody2D, SlowState> pair in slowedBodies)
+                if (pair.Key != null) RestoreBody(pair.Key, pair.Value);
+            slowedBodies.Clear();
         }
 
-        public void ReleaseFlip()
+        private static void RestoreBody(Rigidbody2D body, SlowState state)
         {
-            if (targetFlip == null || caughtBody == null) return;
-            targetFlip.transform.SetParent(originalParent, true);
-            caughtBody.simulated = true;
-            caughtBody.WakeUp();
-            caughtBody = null;
-            originalParent = null;
+            body.linearDamping = state.OriginalLinearDamping;
+            body.angularDamping = state.OriginalAngularDamping;
+            body.WakeUp();
         }
-#if UNITY_EDITOR
-        [ContextMenu("Initialize Simple Setup")]
-        private void InitializeSimpleSetup()
+
+        private void OnValidate()
         {
-            Undo.RecordObject(this, "Initialize Simple Seaweed");
-            triggerZone = GetComponent<Collider2D>();
-            if (triggerZone == null) triggerZone = Undo.AddComponent<BoxCollider2D>(gameObject);
-            Undo.RecordObject(triggerZone, "Configure Seaweed Trigger");
-            triggerZone.isTrigger = true;
-
-            Rigidbody2D body = GetComponent<Rigidbody2D>();
-            if (body == null) body = Undo.AddComponent<Rigidbody2D>(gameObject);
-            Undo.RecordObject(body, "Configure Seaweed Rigidbody");
-            body.bodyType = RigidbodyType2D.Kinematic;
-            body.gravityScale = 0f;
-
-            holdPoint = transform.Find("HoldPoint");
-            if (holdPoint == null)
-            {
-                var go = new GameObject("HoldPoint");
-                Undo.RegisterCreatedObjectUndo(go, "Create Seaweed Hold Point");
-                Undo.SetTransformParent(go.transform, transform, "Parent Hold Point");
-                holdPoint = go.transform;
-                holdPoint.localPosition = Vector3.zero;
-            }
-            EditorUtility.SetDirty(this);
-            PrefabUtility.RecordPrefabInstancePropertyModifications(this);
+            entryVelocityMultiplier = Mathf.Clamp(entryVelocityMultiplier, .05f, 1f);
+            extraLinearDamping = Mathf.Max(0f, extraLinearDamping);
+            if (triggerZone != null) triggerZone.isTrigger = true;
         }
-#endif
     }
 }

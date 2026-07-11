@@ -101,8 +101,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6362728832939017257}
   - component: {fileID: 7553462040943060193}
-  m_Layer: 4
-  m_Name: FlipCatchZone
+  m_Layer: 0
+  m_Name: Slow Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -399,10 +399,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jam24.SeaweedTrap2D
   triggerZone: {fileID: 7553462040943060193}
-  holdPoint: {fileID: 6362728832939017257}
-  animator: {fileID: 0}
-  inWaterFlowBool: InWaterFlow
-  releaseOnWaterFlow: 1
+  entryVelocityMultiplier: 0.45
+  extraLinearDamping: 6
 --- !u!50 &8668162801698201425
 Rigidbody2D:
   serializedVersion: 5
