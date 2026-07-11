@@ -71,6 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4735091871577910030}
+  - component: {fileID: 5210161435639102178}
   m_Layer: 0
   m_Name: Level 0
   m_TagString: Untagged
@@ -100,6 +101,22 @@ Transform:
   - {fileID: 7863642926480854267}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5210161435639102178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6576761964840631136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b86cff748a4aa6b2f8eb975a432db9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.LevelDefinition
+  playerSpawn: {fileID: 1293636378065976217}
+  flipSpawn: {fileID: 7863642926480854267}
+  finishers:
+  - {fileID: 1757589694657994365}
 --- !u!1 &8703856462493331835
 GameObject:
   m_ObjectHideFlags: 0

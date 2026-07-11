@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8758540483182120544}
   - component: {fileID: 4231933694920909467}
+  - component: {fileID: 542193711789564675}
   m_Layer: 0
   m_Name: Finisher
   m_TagString: Untagged
@@ -78,3 +79,15 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 4.042835, y: 7.257903}
   m_EdgeRadius: 0
+--- !u!114 &542193711789564675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8794785370058645236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f71fd8c1527424943bdbe8104be78754, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.FinishZone

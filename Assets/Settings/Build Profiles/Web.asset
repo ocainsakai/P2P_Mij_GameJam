@@ -621,7 +621,7 @@ MonoBehaviour:
     - line: '|     QNX: DOTWEEN'
     - line: '|     Standalone: DOTWEEN'
     - line: '|     VisionOS: DOTWEEN'
-    - line: '|     WebGL: DOTWEEN'
+    - line: '|     WebGL: DOTWEEN;SENTIS_ANALYTICS_ENABLED;APP_UI_EDITOR_ONLY'
     - line: '|     Windows Store Apps: DOTWEEN'
     - line: '|     XboxOne: DOTWEEN'
     - line: '|     iPhone: DOTWEEN'

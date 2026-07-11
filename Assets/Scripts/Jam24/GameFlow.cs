@@ -68,9 +68,22 @@ namespace Jam24
 
         public void PlayLevel(int levelIndex)
         {
-            CurrentLevel = Mathf.Clamp(levelIndex, 0, TotalLevels - 1);
+            CurrentLevel = Mathf.Max(0, levelIndex);
             PlayerPrefs.SetInt(SaveData.LastLevelKey, CurrentLevel);
             RequestScene(GameplayScene);
+        }
+
+        public void ConfigureTotalLevels(int totalLevels)
+        {
+            TotalLevels = Mathf.Max(1, totalLevels);
+            CurrentLevel = Mathf.Clamp(CurrentLevel, 0, TotalLevels - 1);
+        }
+
+        public void SetCurrentLevel(int levelIndex)
+        {
+            CurrentLevel = Mathf.Clamp(levelIndex, 0, TotalLevels - 1);
+            PlayerPrefs.SetInt(SaveData.LastLevelKey, CurrentLevel);
+            PlayerPrefs.Save();
         }
 
         public void Continue() => PlayLevel(PlayerPrefs.GetInt(SaveData.LastLevelKey, 0));
@@ -98,7 +111,7 @@ namespace Jam24
             SetState(GameState.Playing);
         }
 
-        public void Win(int moves)
+        public void Win()
         {
             if (State != GameState.Playing) return;
             SetState(GameState.Win);
