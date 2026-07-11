@@ -125,7 +125,7 @@ MonoBehaviour:
   flowStartDelay: 0.2
   flowDuration: 0
   flowForce: 12
-  openSprite: {fileID: 0}
+  openSprite: {fileID: 21300000, guid: 5d862b9c6442c514c936dfc2cae6b59e, type: 3}
 --- !u!1 &7607104398136328216
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,6 +292,26 @@ PrefabInstance:
     - target: {fileID: 1604486674947232669, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612776370770881187, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612776370770881187, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612776370770881187, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612776370770881187, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612776370770881187, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
