@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2933464360644276536
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7342850275793632369}
+  - component: {fileID: 8155982989363544573}
+  m_Layer: 0
+  m_Name: GameplayManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7342850275793632369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2933464360644276536}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8155982989363544573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2933464360644276536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e8dc3f99aaf7347a07b6a4d4a89663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.GameplayManager
+  levelPrefabs:
+  - {fileID: 6576761964840631136, guid: 368af7c9c8a322149bcce70bea75f84f, type: 3}
+  - {fileID: 6576761964840631136, guid: 1e350e0c6ee0fb84082a962a7f8d0df0, type: 3}
+  - {fileID: 6576761964840631136, guid: c4d1f2877e5505a4aa9bec47db9518cf, type: 3}
+  - {fileID: 6576761964840631136, guid: e7f97ea7a4035af42adaa64a022779e6, type: 3}
+  - {fileID: 6576761964840631136, guid: 62006eefab5e85d468915a725dcf5033, type: 3}
+  - {fileID: 6576761964840631136, guid: 46b7ba6d3278b3342872f8d151aa6ffb, type: 3}
+  - {fileID: 6576761964840631136, guid: c998bc39061a85c4f94805e2692cb201, type: 3}
+  levelContainer: {fileID: 0}
+  gameplayCamera: {fileID: 0}
+  playerPrefab: {fileID: 7535912597743150217, guid: 04484ee9b6e2da947b9f4a7cbad4e2bd, type: 3}
+  flipPrefab: {fileID: 4836597993442609622, guid: 45663e306e9c83e41bb274c8fb4c4fb2, type: 3}
