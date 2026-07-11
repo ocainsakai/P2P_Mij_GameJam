@@ -6,7 +6,7 @@ namespace Jam24
 {
     /// <summary>
     /// A puffer fish that periodically inflates. While inflated, landing on its
-    /// head launches the player along a right-facing parabolic arc.
+    /// head launches the player or Flip along a right-facing parabolic arc.
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
@@ -152,60 +152,64 @@ namespace Jam24
             if (!IsInflated) return;
 
             OctopusPlayerMovement movement = other.GetComponentInParent<OctopusPlayerMovement>();
-            if (movement == null) return;
+            bool isFlip = other.GetComponentInParent<FlipWallBounce2D>() != null ||
+                          GameplayManager.Instance != null && GameplayManager.Instance.IsFlip(other.gameObject);
+            if (movement == null && !isFlip) return;
 
-            Rigidbody2D playerBody = movement.GetComponent<Rigidbody2D>();
-            if (playerBody == null || activeLaunches.ContainsKey(playerBody)) return;
-            if (nextLaunchTimes.TryGetValue(playerBody, out float nextTime) && Time.time < nextTime) return;
+            Rigidbody2D launchedBody = other.attachedRigidbody;
+            if (launchedBody == null && movement != null)
+                launchedBody = movement.GetComponent<Rigidbody2D>();
+            if (launchedBody == null || activeLaunches.ContainsKey(launchedBody)) return;
+            if (nextLaunchTimes.TryGetValue(launchedBody, out float nextTime) && Time.time < nextTime) return;
 
             // The trigger overlaps only the upper area; this additional check
             // prevents a side touch from counting as landing on the fish's head.
-            if (playerBody.worldCenterOfMass.y < transform.position.y + minimumTopHeight) return;
+            if (launchedBody.worldCenterOfMass.y < transform.position.y + minimumTopHeight) return;
 
-            StartCoroutine(LaunchPlayer(playerBody, movement));
+            StartCoroutine(LaunchBody(launchedBody, movement));
         }
 
-        private IEnumerator LaunchPlayer(Rigidbody2D playerBody, OctopusPlayerMovement movement)
+        private IEnumerator LaunchBody(Rigidbody2D launchedBody, OctopusPlayerMovement movement)
         {
             LaunchState state = new()
             {
-                BodyType = playerBody.bodyType,
-                MovementWasEnabled = movement.enabled,
+                BodyType = launchedBody.bodyType,
+                MovementWasEnabled = movement != null && movement.enabled,
                 Movement = movement
             };
-            activeLaunches.Add(playerBody, state);
+            activeLaunches.Add(launchedBody, state);
 
-            movement.enabled = false;
-            playerBody.linearVelocity = Vector2.zero;
-            playerBody.angularVelocity = 0f;
-            playerBody.bodyType = RigidbodyType2D.Kinematic;
+            if (movement != null) movement.enabled = false;
+            launchedBody.linearVelocity = Vector2.zero;
+            launchedBody.angularVelocity = 0f;
+            launchedBody.bodyType = RigidbodyType2D.Kinematic;
 
-            Vector2 start = playerBody.position;
+            Vector2 start = launchedBody.position;
             Vector2 end = start + new Vector2(launchDistance, landingHeightOffset);
             float elapsed = 0f;
 
-            while (elapsed < launchDuration && playerBody != null)
+            while (elapsed < launchDuration && launchedBody != null)
             {
                 elapsed += Time.fixedDeltaTime;
                 float t = Mathf.Clamp01(elapsed / launchDuration);
                 Vector2 position = Vector2.Lerp(start, end, t);
                 position.y += 4f * launchHeight * t * (1f - t);
-                playerBody.MovePosition(position);
+                launchedBody.MovePosition(position);
                 yield return new WaitForFixedUpdate();
             }
 
-            if (playerBody != null)
+            if (launchedBody != null)
             {
-                playerBody.position = end;
-                RestorePlayer(playerBody, state);
-                playerBody.linearVelocity = new Vector2(launchDistance / launchDuration, 0f);
-                nextLaunchTimes[playerBody] = Time.time + relaunchCooldown;
+                launchedBody.position = end;
+                RestoreBody(launchedBody, state);
+                launchedBody.linearVelocity = new Vector2(launchDistance / launchDuration, 0f);
+                nextLaunchTimes[launchedBody] = Time.time + relaunchCooldown;
             }
 
-            activeLaunches.Remove(playerBody);
+            activeLaunches.Remove(launchedBody);
         }
 
-        private static void RestorePlayer(Rigidbody2D body, LaunchState state)
+        private static void RestoreBody(Rigidbody2D body, LaunchState state)
         {
             body.bodyType = state.BodyType;
             if (state.Movement != null) state.Movement.enabled = state.MovementWasEnabled;
@@ -219,7 +223,7 @@ namespace Jam24
 
             foreach (KeyValuePair<Rigidbody2D, LaunchState> pair in activeLaunches)
             {
-                if (pair.Key != null) RestorePlayer(pair.Key, pair.Value);
+                if (pair.Key != null) RestoreBody(pair.Key, pair.Value);
             }
 
             activeLaunches.Clear();

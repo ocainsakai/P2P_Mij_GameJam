@@ -118,6 +118,7 @@ MonoBehaviour:
   finishers:
   - {fileID: 1757589694657994365}
   startingFlipCount: 1
+  cameraSize: 6
   overrideBuoyancy: 0
   buoyancyEffectors:
   - {fileID: 6448410492613414856}

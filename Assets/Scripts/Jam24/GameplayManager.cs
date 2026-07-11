@@ -104,6 +104,12 @@ namespace Jam24
             if (!definition.TryValidate(out string definitionError))
                 return FailLevelLoad($"Level '{CurrentLevel.name}' configuration is invalid:\n{definitionError}");
             activeDefinition = definition;
+            Camera gameplayCamera = Camera.main;
+            if (gameplayCamera != null)
+                gameplayCamera.orthographicSize = definition.CameraSize;
+            else
+                Debug.LogWarning("Main Camera was not found; level camera size was not applied.", this);
+
             flipRespawnDisabled = false;
             nextFlipSpawnIndex = 0;
             RemainingFlips = definition.StartingFlipCount;

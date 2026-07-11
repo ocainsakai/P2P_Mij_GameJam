@@ -122,6 +122,7 @@ MonoBehaviour:
   - {fileID: 1757589694657994365}
   startingFlipCount: 1
   loseWhenFlipTrappedBySeaweed: 1
+  cameraSize: 5
   overrideBuoyancy: 0
   buoyancyEffectors:
   - {fileID: 6509722297401056044}

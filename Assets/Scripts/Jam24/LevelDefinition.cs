@@ -20,6 +20,9 @@ namespace Jam24
         [SerializeField, Min(1)] public int startingFlipCount = 3;
         [SerializeField] private bool loseWhenFlipTrappedBySeaweed;
 
+        [Header("Camera")]
+        [SerializeField, Min(0.1f)] private float cameraSize = 5f;
+
         [Header("Runtime Buoyancy")]
         [SerializeField] private bool overrideBuoyancy;
         [SerializeField] private BuoyancyEffector2D[] buoyancyEffectors;
@@ -42,6 +45,7 @@ namespace Jam24
         public Transform[] Finishers => finishers;
         public int StartingFlipCount => Mathf.Max(1, startingFlipCount);
         public bool LoseWhenFlipTrappedBySeaweed => loseWhenFlipTrappedBySeaweed;
+        public float CameraSize => Mathf.Max(0.1f, cameraSize);
         public Transform[] DeadZones => deadZones;
         public IReadOnlyList<BuoyancyEffector2D> BuoyancyEffectors => buoyancyEffectors;
 
@@ -142,6 +146,7 @@ namespace Jam24
         private void OnValidate()
         {
             startingFlipCount = Mathf.Max(1, startingFlipCount);
+            cameraSize = Mathf.Max(0.1f, cameraSize);
             buoyancyDensity = Mathf.Max(0f, buoyancyDensity);
             buoyancyLinearDamping = Mathf.Max(0f, buoyancyLinearDamping);
             buoyancyAngularDamping = Mathf.Max(0f, buoyancyAngularDamping);
