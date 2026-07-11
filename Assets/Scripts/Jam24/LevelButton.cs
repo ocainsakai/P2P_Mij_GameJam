@@ -20,11 +20,7 @@ namespace Jam24
             bool unlocked = SaveData.IsUnlocked(levelIndex);
             GetComponent<Button>().interactable = unlocked;
             if (label != null)
-            {
-                int stars = SaveData.BestStars(levelIndex);
-                string result = stars > 0 ? $"\n{new string('★', stars)}" : string.Empty;
-                label.text = unlocked ? $"{levelIndex + 1}{result}" : "LOCKED";
-            }
+                label.text = unlocked ? $"{levelIndex + 1}" : "LOCKED";
         }
 
         public void Play()

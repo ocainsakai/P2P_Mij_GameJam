@@ -21,6 +21,7 @@ namespace Jam24
         public static event Action<GameState> StateChanged;
         public GameState State { get; private set; }
         public int CurrentLevel { get; private set; }
+        [field: SerializeField, Min(1)] public int TotalLevels { get; private set; } = 1;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void EnsureInstanceForDirectScenePlay()
@@ -67,7 +68,7 @@ namespace Jam24
 
         public void PlayLevel(int levelIndex)
         {
-            CurrentLevel = Mathf.Clamp(levelIndex, 0, SoleLevelCatalog.Count - 1);
+            CurrentLevel = Mathf.Clamp(levelIndex, 0, TotalLevels - 1);
             PlayerPrefs.SetInt(SaveData.LastLevelKey, CurrentLevel);
             RequestScene(GameplayScene);
         }
@@ -116,7 +117,7 @@ namespace Jam24
 
         public void NextLevel()
         {
-            if (CurrentLevel + 1 < SoleLevelCatalog.Count) PlayLevel(CurrentLevel + 1);
+            if (CurrentLevel + 1 < TotalLevels) PlayLevel(CurrentLevel + 1);
             else Home();
         }
 
