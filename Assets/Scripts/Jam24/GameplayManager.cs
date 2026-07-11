@@ -31,6 +31,7 @@ namespace Jam24
         private bool flipRespawnDisabled;
         private LevelDefinition activeDefinition;
         private Coroutine flipRespawnRoutine;
+        private int nextFlipSpawnIndex;
 
         // private void LateUpdate()
         // {
@@ -95,6 +96,7 @@ namespace Jam24
                 return FailLevelLoad($"Level '{CurrentLevel.name}' configuration is invalid:\n{definitionError}");
             activeDefinition = definition;
             flipRespawnDisabled = false;
+            nextFlipSpawnIndex = 0;
             RemainingFlips = definition.StartingFlipCount;
             FlipCountChanged?.Invoke(RemainingFlips);
 
@@ -130,6 +132,22 @@ namespace Jam24
             {
                 flipRespawnRoutine = StartCoroutine(RespawnFlip());
             }
+            return true;
+        }
+
+        public bool IsFlip(GameObject candidate)
+        {
+            return Flip != null && candidate != null &&
+                   (candidate == Flip || candidate.transform.IsChildOf(Flip.transform));
+        }
+
+        public bool TryLosePlayer(GameObject candidate)
+        {
+            if (levelFinished || Player == null || candidate == null) return false;
+            if (candidate != Player && !candidate.transform.IsChildOf(Player.transform)) return false;
+
+            levelFinished = true;
+            GameFlow.Instance?.Lose();
             return true;
         }
 
@@ -186,7 +204,15 @@ namespace Jam24
         private void SpawnFlip()
         {
             if (activeDefinition == null || levelFinished || flipRespawnDisabled) return;
-            Flip = Instantiate(flipPrefab, activeDefinition.FlipSpawn.position, activeDefinition.FlipSpawn.rotation, transform);
+            Transform spawn = activeDefinition.GetFlipSpawn(nextFlipSpawnIndex);
+            if (spawn == null)
+            {
+                Debug.LogError($"Level '{activeDefinition.name}' has no valid Flip spawn.", activeDefinition);
+                return;
+            }
+            nextFlipSpawnIndex++;
+
+            Flip = Instantiate(flipPrefab, spawn.position, spawn.rotation, transform);
             Flip.name = flipPrefab.name;
 
             foreach (Transform finisherTransform in activeDefinition.Finishers)

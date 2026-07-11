@@ -43,6 +43,13 @@ namespace Jam24
         public Transform[] DeadZones => deadZones;
         public IReadOnlyList<BuoyancyEffector2D> BuoyancyEffectors => buoyancyEffectors;
 
+        public Transform GetFlipSpawn(int index)
+        {
+            IReadOnlyList<Transform> spawns = FlipSpawns;
+            if (spawns.Count == 0) return null;
+            return spawns[Mathf.Abs(index) % spawns.Count];
+        }
+
         private void Awake()
         {
             BindBuoyancyEffectors();
