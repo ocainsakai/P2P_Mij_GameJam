@@ -349,18 +349,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -0.62327224
       objectReference: {fileID: 0}
-    - target: {fileID: 6493454562467184734, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
-      propertyPath: m_Size.x
-      value: 13.948405
-      objectReference: {fileID: 0}
-    - target: {fileID: 6493454562467184734, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
-      propertyPath: m_Size.y
-      value: 1.546875
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646500083639736573, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
-      propertyPath: m_Size.x
-      value: 13.960148
-      objectReference: {fileID: 0}
     - target: {fileID: 5612776370770881187, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
       value: 2.8
@@ -380,6 +368,18 @@ PrefabInstance:
     - target: {fileID: 5612776370770881187, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
       propertyPath: InitialModule.startRotationY.minMaxState
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6493454562467184734, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: m_Size.x
+      value: 13.948405
+      objectReference: {fileID: 0}
+    - target: {fileID: 6493454562467184734, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: m_Size.y
+      value: 1.546875
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646500083639736573, guid: e3437c89ad59ae3428c3852f7f0e2885, type: 3}
+      propertyPath: m_Size.x
+      value: 13.960148
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
