@@ -43,6 +43,8 @@ namespace Jam24
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (IsGrabbing || IsFleeing) return;
+            if (other.GetComponentInParent<OctopusPlayerMovement>() != null) return;
+
             Rigidbody2D targetBody = other.attachedRigidbody;
             if (targetBody == null || targetBody.bodyType != RigidbodyType2D.Dynamic) return;
             if (targetBody.transform == transform || targetBody.transform.IsChildOf(transform)) return;
@@ -80,18 +82,24 @@ namespace Jam24
 
             if (target != null)
             {
-                target.SetActive(false);
+                HideGrabbedObject(target);
                 bool wasFlip = GameplayManager.Instance != null && GameplayManager.Instance.TryConsumeFlip(target);
                 if (!wasFlip)
-                {
-                    if (target.GetComponent<OctopusPlayerMovement>() != null) GameFlow.Instance?.Lose();
                     Destroy(target);
-                }
             }
 
             yield return null;
             IsGrabbing = false;
             yield return FleeRight();
+        }
+
+        private static void HideGrabbedObject(GameObject target)
+        {
+            foreach (Renderer targetRenderer in target.GetComponentsInChildren<Renderer>(true))
+                targetRenderer.enabled = false;
+
+            target.transform.localScale = Vector3.zero;
+            target.SetActive(false);
         }
 
         private IEnumerator FleeRight()

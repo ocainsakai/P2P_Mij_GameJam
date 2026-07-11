@@ -24,7 +24,6 @@ namespace Jam24
         [Header("Actors")]
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private GameObject flipPrefab;
-        [SerializeField, Min(0f)] private float flipRespawnDelay = .75f;
 
         public GameObject CurrentLevel { get; private set; }
         public GameObject Player { get; private set; }
@@ -35,7 +34,6 @@ namespace Jam24
 
         private bool levelFinished;
         private LevelDefinition activeDefinition;
-        private Coroutine flipRespawnRoutine;
         private Coroutine deathRoutine;
 
         private void Awake()
@@ -116,10 +114,6 @@ namespace Jam24
                 levelFinished = true;
                 GameFlow.Instance?.Lose();
             }
-            else
-            {
-                flipRespawnRoutine = StartCoroutine(RespawnFlip());
-            }
             return true;
         }
 
@@ -176,13 +170,6 @@ namespace Jam24
                 if (deadZone == null) deadZone = deadZoneTransform.gameObject.AddComponent<DeadZone>();
                 deadZone.Configure(Player, Flip, HandlePlayerEnteredDeadZone, HandleFlipEnteredDeadZone);
             }
-        }
-
-        private IEnumerator RespawnFlip()
-        {
-            if (flipRespawnDelay > 0f) yield return new WaitForSeconds(flipRespawnDelay);
-            flipRespawnRoutine = null;
-            SpawnFlip();
         }
 
         private void HandleFlipEnteredDeadZone()
@@ -284,11 +271,6 @@ namespace Jam24
 
         private void ClearRuntimeObjects()
         {
-            if (flipRespawnRoutine != null)
-            {
-                StopCoroutine(flipRespawnRoutine);
-                flipRespawnRoutine = null;
-            }
             if (deathRoutine != null)
             {
                 StopCoroutine(deathRoutine);
