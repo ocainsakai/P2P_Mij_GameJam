@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,19 +16,42 @@ namespace Jam24
         [SerializeField, Min(0f)] private float extraLinearDamping = 6f;
 
         private readonly Dictionary<Rigidbody2D, SlowState> slowedBodies = new();
+        private readonly HashSet<FlowLayerLooper2D> activeFlows = new();
         private Rigidbody2D seaweedBody;
+        private GameObject targetFlip;
+
+        public bool IsInFlow => activeFlows.Count > 0;
+        public event Action<bool> FlowStateChanged;
 
         private sealed class SlowState
         {
             public float OriginalLinearDamping;
             public float OriginalAngularDamping;
+            public RigidbodyConstraints2D OriginalConstraints;
             public int OverlapCount;
+            public bool IsFlip;
+            public bool IsHeldFlip;
         }
 
-        // Kept for compatibility with GameplayManager. Seaweed is now generic
-        // and no longer needs explicit Player/Flip references.
         public void ConfigureTargets(GameObject targetPlayer, GameObject flip)
         {
+            targetFlip = flip;
+        }
+
+        public void SetFlowState(FlowLayerLooper2D flow, bool isFlowingOver)
+        {
+            if (flow == null) return;
+
+            bool wasInFlow = IsInFlow;
+            if (isFlowingOver) activeFlows.Add(flow);
+            else activeFlows.Remove(flow);
+
+            if (wasInFlow != IsInFlow)
+            {
+                if (IsInFlow) ReleaseHeldFlips();
+                else HoldOverlappingFlips();
+                FlowStateChanged?.Invoke(IsInFlow);
+            }
         }
 
         private void Awake()
@@ -58,9 +82,17 @@ namespace Jam24
             {
                 OriginalLinearDamping = body.linearDamping,
                 OriginalAngularDamping = body.angularDamping,
+                OriginalConstraints = body.constraints,
+                IsFlip = IsTargetFlip(body.gameObject),
                 OverlapCount = 1
             };
             slowedBodies.Add(body, state);
+
+            if (state.IsFlip && !IsInFlow)
+            {
+                HoldFlip(body, state);
+                return;
+            }
 
             body.linearVelocity *= entryVelocityMultiplier;
             body.angularVelocity *= entryVelocityMultiplier;
@@ -89,17 +121,64 @@ namespace Jam24
             return body;
         }
 
+        private bool IsTargetFlip(GameObject candidate)
+        {
+            if (GameplayManager.Instance != null && GameplayManager.Instance.IsFlip(candidate))
+                return true;
+
+            if (targetFlip != null)
+                return candidate == targetFlip || candidate.transform.IsChildOf(targetFlip.transform);
+
+            return false;
+        }
+
+        private void ReleaseHeldFlips()
+        {
+            foreach (KeyValuePair<Rigidbody2D, SlowState> pair in slowedBodies)
+            {
+                Rigidbody2D body = pair.Key;
+                SlowState state = pair.Value;
+                if (body == null || !state.IsHeldFlip) continue;
+
+                state.IsHeldFlip = false;
+                body.constraints = state.OriginalConstraints;
+                body.linearDamping = state.OriginalLinearDamping + extraLinearDamping;
+                body.angularDamping = state.OriginalAngularDamping + extraLinearDamping;
+                body.WakeUp();
+            }
+        }
+
+        private void HoldOverlappingFlips()
+        {
+            foreach (KeyValuePair<Rigidbody2D, SlowState> pair in slowedBodies)
+                if (pair.Key != null && pair.Value.IsFlip && !pair.Value.IsHeldFlip)
+                    HoldFlip(pair.Key, pair.Value);
+        }
+
+        private static void HoldFlip(Rigidbody2D body, SlowState state)
+        {
+            state.IsHeldFlip = true;
+            body.linearVelocity = Vector2.zero;
+            body.angularVelocity = 0f;
+            body.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+
         private void OnDisable()
         {
             foreach (KeyValuePair<Rigidbody2D, SlowState> pair in slowedBodies)
                 if (pair.Key != null) RestoreBody(pair.Key, pair.Value);
             slowedBodies.Clear();
+
+            bool wasInFlow = IsInFlow;
+            activeFlows.Clear();
+            if (wasInFlow) FlowStateChanged?.Invoke(false);
         }
 
         private static void RestoreBody(Rigidbody2D body, SlowState state)
         {
             body.linearDamping = state.OriginalLinearDamping;
             body.angularDamping = state.OriginalAngularDamping;
+            body.constraints = state.OriginalConstraints;
             body.WakeUp();
         }
 

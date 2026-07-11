@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace Jam24
         private Vector2 fittedOffset;
         private Vector3 fittedLossyScale;
         private bool fitPending = true;
+        private readonly Dictionary<SeaweedTrap2D, int> overlappingSeaweed = new();
 
         private void Awake()
         {
@@ -58,7 +60,36 @@ namespace Jam24
 
         private void OnDisable()
         {
+            foreach (SeaweedTrap2D trap in overlappingSeaweed.Keys)
+                if (trap != null) trap.SetFlowState(this, false);
+            overlappingSeaweed.Clear();
             RestorePositions();
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            SeaweedTrap2D trap = other.GetComponentInParent<SeaweedTrap2D>();
+            if (trap == null) return;
+
+            overlappingSeaweed.TryGetValue(trap, out int overlapCount);
+            overlappingSeaweed[trap] = overlapCount + 1;
+            if (overlapCount == 0) trap.SetFlowState(this, true);
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            SeaweedTrap2D trap = other.GetComponentInParent<SeaweedTrap2D>();
+            if (trap == null || !overlappingSeaweed.TryGetValue(trap, out int overlapCount)) return;
+
+            overlapCount--;
+            if (overlapCount > 0)
+            {
+                overlappingSeaweed[trap] = overlapCount;
+                return;
+            }
+
+            overlappingSeaweed.Remove(trap);
+            trap.SetFlowState(this, false);
         }
 
         private void OnValidate()

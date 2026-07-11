@@ -113,10 +113,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jam24.LevelDefinition
   playerSpawn: {fileID: 1293636378065976217}
-  flipSpawn: {fileID: 7863642926480854267}
+  legacyFlipSpawn: {fileID: 7863642926480854267}
+  flipSpawns: []
   finishers:
   - {fileID: 1757589694657994365}
-  startingFlipCount: 3
+  startingFlipCount: 1
+  overrideBuoyancy: 0
+  buoyancyEffectors:
+  - {fileID: 1844533963647282665}
+  buoyancySurfaceLevel: 0
+  buoyancyDensity: 1.2
+  buoyancyLinearDamping: 2
+  buoyancyAngularDamping: 1.2
+  buoyancyFlowAngle: 0
+  buoyancyFlowMagnitude: 0.6
+  buoyancyFlowVariation: 0.15
   deadZones: []
 --- !u!1001 &246209274922204419
 PrefabInstance:
@@ -351,6 +362,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c7878af328a5904ab438db4b768f5a0, type: 3}
+--- !u!253 &1844533963647282665 stripped
+BuoyancyEffector2D:
+  m_CorrespondingSourceObject: {fileID: 3183993293625604188, guid: 4c7878af328a5904ab438db4b768f5a0, type: 3}
+  m_PrefabInstance: {fileID: 3870501768644351413}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6328772292752477691 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7089395908450310222, guid: 4c7878af328a5904ab438db4b768f5a0, type: 3}

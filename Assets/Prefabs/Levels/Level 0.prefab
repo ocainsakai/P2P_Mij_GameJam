@@ -113,10 +113,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jam24.LevelDefinition
   playerSpawn: {fileID: 4963783350637400699}
-  flipSpawn: {fileID: 2648463647312122455}
+  legacyFlipSpawn: {fileID: 2648463647312122455}
+  flipSpawns: []
   finishers:
   - {fileID: 1757589694657994365}
-  startingFlipCount: 3
+  startingFlipCount: 1
   deadZones: []
 --- !u!1001 &213410656649859693
 PrefabInstance:

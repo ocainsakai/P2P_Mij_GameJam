@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5510556956358337043}
   - component: {fileID: 8357128383527451792}
+  - component: {fileID: 2904953333191685884}
   m_Layer: 0
   m_Name: rong 5_0
   m_TagString: Untagged
@@ -91,6 +92,33 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &2904953333191685884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 490858235279029965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9517b159ff4e358d1898d6a612bdad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.SimpleTweenAnimation
+  target: {fileID: 0}
+  animationType: 2
+  playOnEnable: 1
+  useUnscaledTime: 0
+  rotationPerLoop: {x: 0, y: 0, z: 360}
+  rotationDuration: 4
+  shakeDuration: 1
+  shakeStrength: {x: 0.08, y: 0.08, z: 2}
+  shakeVibrato: 8
+  shakeRandomness: 45
+  idleMove: {x: 0, y: 0.06, z: 0}
+  idleRotation: {x: 0, y: 0, z: 2}
+  idleScale: {x: 0.015, y: 0.015, z: 0}
+  idleHalfCycleDuration: 1.4
+  idleEase: 4
 --- !u!1 &832684830493092804
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +185,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.4712184}
+  m_Offset: {x: -0.06609456, y: 0.4164545}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -167,7 +195,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.75, y: 1.0424368}
+  m_Size: {x: 0.31566614, y: 0.932909}
   m_EdgeRadius: 0
 --- !u!1 &2230906299698503209
 GameObject:
@@ -179,6 +207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1200476472568720839}
   - component: {fileID: 8989896559736412781}
+  - component: {fileID: 2648741150707521363}
   m_Layer: 0
   m_Name: rong 3_0
   m_TagString: Untagged
@@ -260,6 +289,33 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &2648741150707521363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2230906299698503209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9517b159ff4e358d1898d6a612bdad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.SimpleTweenAnimation
+  target: {fileID: 0}
+  animationType: 2
+  playOnEnable: 1
+  useUnscaledTime: 0
+  rotationPerLoop: {x: 0, y: 0, z: 360}
+  rotationDuration: 4
+  shakeDuration: 1
+  shakeStrength: {x: 0.08, y: 0.08, z: 2}
+  shakeVibrato: 8
+  shakeRandomness: 45
+  idleMove: {x: 0, y: 0.06, z: 0}
+  idleRotation: {x: 0, y: 0, z: 2}
+  idleScale: {x: 0.015, y: 0.015, z: 0}
+  idleHalfCycleDuration: 1.4
+  idleEase: 4
 --- !u!1 &2359079026634462093
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +326,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4099190047151678472}
   - component: {fileID: 7688053172639172096}
+  - component: {fileID: 9099352007804895488}
   m_Layer: 0
   m_Name: rong 1_0
   m_TagString: Untagged
@@ -351,6 +408,33 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &9099352007804895488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2359079026634462093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9517b159ff4e358d1898d6a612bdad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.SimpleTweenAnimation
+  target: {fileID: 0}
+  animationType: 2
+  playOnEnable: 1
+  useUnscaledTime: 0
+  rotationPerLoop: {x: 0, y: 0, z: 360}
+  rotationDuration: 4
+  shakeDuration: 1
+  shakeStrength: {x: 0.08, y: 0.08, z: 2}
+  shakeVibrato: 8
+  shakeRandomness: 45
+  idleMove: {x: 0, y: 0.06, z: 0}
+  idleRotation: {x: 0, y: 0, z: 2}
+  idleScale: {x: 0.015, y: 0.015, z: 0}
+  idleHalfCycleDuration: 1.4
+  idleEase: 4
 --- !u!1 &3864810071159153739
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,7 +446,6 @@ GameObject:
   - component: {fileID: 2114481443014496023}
   - component: {fileID: 4971265700196204985}
   - component: {fileID: 8668162801698201425}
-  - component: {fileID: 5133566869976341137}
   m_Layer: 4
   m_Name: Seaweed
   m_TagString: Untagged
@@ -428,23 +511,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!111 &5133566869976341137
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3864810071159153739}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: d06c4e13792944b5b74ac4e18af77670, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: d06c4e13792944b5b74ac4e18af77670, type: 2}
-  m_WrapMode: 2
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!1 &5296893428340493802
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,6 +521,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4686578788115319653}
   - component: {fileID: 2189766468896549499}
+  - component: {fileID: 100108810921944226}
   m_Layer: 0
   m_Name: rong 2_0
   m_TagString: Untagged
@@ -536,6 +603,33 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &100108810921944226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296893428340493802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9517b159ff4e358d1898d6a612bdad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.SimpleTweenAnimation
+  target: {fileID: 0}
+  animationType: 2
+  playOnEnable: 1
+  useUnscaledTime: 0
+  rotationPerLoop: {x: 0, y: 0, z: 360}
+  rotationDuration: 4
+  shakeDuration: 1
+  shakeStrength: {x: 0.08, y: 0.08, z: 2}
+  shakeVibrato: 8
+  shakeRandomness: 45
+  idleMove: {x: 0, y: 0.06, z: 0}
+  idleRotation: {x: 0, y: 0, z: 2}
+  idleScale: {x: 0.015, y: 0.015, z: 0}
+  idleHalfCycleDuration: 1.4
+  idleEase: 4
 --- !u!1 &5685810147764718435
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,6 +677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 456897284312492239}
   - component: {fileID: 2397640202358938723}
+  - component: {fileID: 7051916119588150900}
   m_Layer: 0
   m_Name: rong 4_0
   m_TagString: Untagged
@@ -664,3 +759,30 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &7051916119588150900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7314369975990084118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9517b159ff4e358d1898d6a612bdad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.SimpleTweenAnimation
+  target: {fileID: 0}
+  animationType: 2
+  playOnEnable: 1
+  useUnscaledTime: 0
+  rotationPerLoop: {x: 0, y: 0, z: 360}
+  rotationDuration: 4
+  shakeDuration: 1
+  shakeStrength: {x: 0.08, y: 0.08, z: 2}
+  shakeVibrato: 8
+  shakeRandomness: 45
+  idleMove: {x: 0, y: 0.06, z: 0}
+  idleRotation: {x: 0, y: 0, z: 2}
+  idleScale: {x: 0.015, y: 0.015, z: 0}
+  idleHalfCycleDuration: 1.4
+  idleEase: 4
