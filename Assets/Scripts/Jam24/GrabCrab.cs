@@ -46,6 +46,12 @@ namespace Jam24
             Rigidbody2D targetBody = other.attachedRigidbody;
             if (targetBody == null || targetBody.bodyType != RigidbodyType2D.Dynamic) return;
             if (targetBody.transform == transform || targetBody.transform.IsChildOf(transform)) return;
+
+            // The crab faces left to steal and then escapes to the right.
+            // Checking local space keeps this rule correct even if the prefab is rotated.
+            Vector3 localTargetPosition = transform.InverseTransformPoint(targetBody.worldCenterOfMass);
+            if (localTargetPosition.x >= 0f) return;
+
             StartCoroutine(Grab(targetBody));
         }
 
@@ -74,6 +80,7 @@ namespace Jam24
 
             if (target != null)
             {
+                target.SetActive(false);
                 bool wasFlip = GameplayManager.Instance != null && GameplayManager.Instance.TryConsumeFlip(target);
                 if (!wasFlip)
                 {
