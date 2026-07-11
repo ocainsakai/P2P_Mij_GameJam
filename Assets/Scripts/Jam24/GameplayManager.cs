@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -6,6 +8,8 @@ namespace Jam24
 {
     public sealed class GameplayManager : MonoBehaviour
     {
+        public static GameplayManager Instance { get; private set; }
+
         [Header("Levels")]
         [SerializeField] private GameObject[] levelPrefabs;
         [SerializeField] private Transform levelContainer;
@@ -15,20 +19,31 @@ namespace Jam24
         [Header("Actors")]
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private GameObject flipPrefab;
+        [SerializeField, Min(0f)] private float flipRespawnDelay = .75f;
 
         public GameObject CurrentLevel { get; private set; }
         public GameObject Player { get; private set; }
         public GameObject Flip { get; private set; }
+        public int RemainingFlips { get; private set; }
         public int LevelCount => levelPrefabs?.Length ?? 0;
+        public event Action<int> FlipCountChanged;
 
         private bool levelFinished;
+        private LevelDefinition activeDefinition;
+        private Coroutine flipRespawnRoutine;
 
         private void Awake()
         {
+            Instance = this;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             if (GetComponent<GameplayCheatConsole>() == null)
                 gameObject.AddComponent<GameplayCheatConsole>();
 #endif
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
         }
 
         private void Start()
@@ -66,25 +81,41 @@ namespace Jam24
 
             if (!definition.TryValidate(out string definitionError))
                 return FailLevelLoad($"Level '{CurrentLevel.name}' configuration is invalid:\n{definitionError}");
+            activeDefinition = definition;
+            RemainingFlips = definition.StartingFlipCount;
+            FlipCountChanged?.Invoke(RemainingFlips);
 
             Player = Instantiate(playerPrefab, definition.PlayerSpawn.position, definition.PlayerSpawn.rotation, transform);
             Player.name = playerPrefab.name;
-
-            Flip = Instantiate(flipPrefab, definition.FlipSpawn.position, definition.FlipSpawn.rotation, transform);
-            Flip.name = flipPrefab.name;
-
-            foreach (Transform finisherTransform in definition.Finishers)
-            {
-                Collider2D trigger = finisherTransform.GetComponent<Collider2D>();
-                trigger.isTrigger = true;
-                FinishZone finishZone = finisherTransform.GetComponent<FinishZone>();
-                if (finishZone == null) finishZone = finisherTransform.gameObject.AddComponent<FinishZone>();
-                finishZone.Configure(Flip, HandleFlipFinished);
-            }
+            SpawnFlip();
 
             if (gameplayCamera != null) gameplayCamera.Follow = Player.transform;
             else Debug.LogWarning("Gameplay Camera is not assigned; level loaded without camera follow.", this);
 
+            return true;
+        }
+
+        public bool TryConsumeFlip(GameObject candidate)
+        {
+            if (levelFinished || Flip == null || candidate == null) return false;
+            if (candidate != Flip && !candidate.transform.IsChildOf(Flip.transform)) return false;
+
+            GameObject lostFlip = Flip;
+            Flip = null;
+            RemainingFlips = Mathf.Max(0, RemainingFlips - 1);
+            FlipCountChanged?.Invoke(RemainingFlips);
+            Debug.Log($"Grab Crab stole a Flip. Remaining Flips: {RemainingFlips}.", this);
+            Destroy(lostFlip);
+
+            if (RemainingFlips <= 0)
+            {
+                levelFinished = true;
+                GameFlow.Instance?.Lose();
+            }
+            else
+            {
+                flipRespawnRoutine = StartCoroutine(RespawnFlip());
+            }
             return true;
         }
 
@@ -99,6 +130,29 @@ namespace Jam24
             if (GameFlow.Instance == null) return;
             SaveData.CompleteLevel(GameFlow.Instance.CurrentLevel, levelPrefabs.Length);
             GameFlow.Instance.Win();
+        }
+
+        private void SpawnFlip()
+        {
+            if (activeDefinition == null || levelFinished) return;
+            Flip = Instantiate(flipPrefab, activeDefinition.FlipSpawn.position, activeDefinition.FlipSpawn.rotation, transform);
+            Flip.name = flipPrefab.name;
+
+            foreach (Transform finisherTransform in activeDefinition.Finishers)
+            {
+                Collider2D trigger = finisherTransform.GetComponent<Collider2D>();
+                trigger.isTrigger = true;
+                FinishZone finishZone = finisherTransform.GetComponent<FinishZone>();
+                if (finishZone == null) finishZone = finisherTransform.gameObject.AddComponent<FinishZone>();
+                finishZone.Configure(Flip, HandleFlipFinished);
+            }
+        }
+
+        private IEnumerator RespawnFlip()
+        {
+            if (flipRespawnDelay > 0f) yield return new WaitForSeconds(flipRespawnDelay);
+            flipRespawnRoutine = null;
+            SpawnFlip();
         }
 
         private bool ValidateConfiguration(int levelIndex)
@@ -129,6 +183,7 @@ namespace Jam24
             Debug.LogError(message, this);
             if (CurrentLevel != null) Destroy(CurrentLevel);
             CurrentLevel = null;
+            activeDefinition = null;
             Player = null;
             Flip = null;
             if (gameplayCamera != null) gameplayCamera.Follow = null;
@@ -137,10 +192,16 @@ namespace Jam24
 
         private void ClearRuntimeObjects()
         {
+            if (flipRespawnRoutine != null)
+            {
+                StopCoroutine(flipRespawnRoutine);
+                flipRespawnRoutine = null;
+            }
             if (CurrentLevel != null) Destroy(CurrentLevel);
             if (Player != null) Destroy(Player);
             if (Flip != null) Destroy(Flip);
             CurrentLevel = null;
+            activeDefinition = null;
             Player = null;
             Flip = null;
         }

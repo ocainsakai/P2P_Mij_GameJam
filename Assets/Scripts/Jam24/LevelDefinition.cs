@@ -12,9 +12,13 @@ namespace Jam24
         [Header("Goals")]
         [SerializeField] private Transform[] finishers;
 
+        [Header("Rules")]
+        [SerializeField, Min(1)] private int startingFlipCount = 3;
+
         public Transform PlayerSpawn => playerSpawn;
         public Transform FlipSpawn => flipSpawn;
         public Transform[] Finishers => finishers;
+        public int StartingFlipCount => Mathf.Max(1, startingFlipCount);
 
         public bool TryValidate(out string error)
         {
