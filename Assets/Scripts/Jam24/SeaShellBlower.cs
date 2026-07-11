@@ -6,7 +6,7 @@ namespace Jam24
     /// <summary>
     /// Touch-activated shell. It opens through an Animator, enables its Flow
     /// effector for a limited time, then closes automatically.
-    /// Local right is the blow direction, so rotate the prefab to aim it.
+    /// The blow direction is configured by the AreaEffector2D force angle.
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Collider2D), typeof(Animator))]
@@ -49,7 +49,6 @@ namespace Jam24
             {
                 waterEffector.useColliderMask = false;
                 waterEffector.useGlobalAngle = false;
-                waterEffector.forceAngle = 0f;
                 waterEffector.forceMagnitude = flowForce;
                 waterEffector.forceVariation = 0f;
             }
