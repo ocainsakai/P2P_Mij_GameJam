@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7342850275793632369}
   - component: {fileID: 8155982989363544573}
+  - component: {fileID: 1642487946920787867}
   m_Layer: 0
   m_Name: GameplayManager
   m_TagString: Untagged
@@ -54,5 +55,18 @@ MonoBehaviour:
   - {fileID: 6576761964840631136, guid: c998bc39061a85c4f94805e2692cb201, type: 3}
   levelContainer: {fileID: 0}
   gameplayCamera: {fileID: 0}
+  cutsceneManager: {fileID: 1642487946920787867}
   playerPrefab: {fileID: 7535912597743150217, guid: 04484ee9b6e2da947b9f4a7cbad4e2bd, type: 3}
   flipPrefab: {fileID: 4836597993442609622, guid: 45663e306e9c83e41bb274c8fb4c4fb2, type: 3}
+--- !u!114 &1642487946920787867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2933464360644276536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e3441269974fa89a98ec60bb2a7cf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.CutsceneManager

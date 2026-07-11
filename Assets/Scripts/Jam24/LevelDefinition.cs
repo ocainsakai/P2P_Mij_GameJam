@@ -12,9 +12,15 @@ namespace Jam24
         [Header("Goals")]
         [SerializeField] private Transform[] finishers;
 
+        [Header("Failure")]
+        [SerializeField] private Transform[] deadZones;
+        [SerializeField] private CutsceneSequence playerDeathCutscene;
+
         public Transform PlayerSpawn => playerSpawn;
         public Transform FlipSpawn => flipSpawn;
         public Transform[] Finishers => finishers;
+        public Transform[] DeadZones => deadZones;
+        public CutsceneSequence PlayerDeathCutscene => playerDeathCutscene;
 
         public bool TryValidate(out string error)
         {
@@ -36,6 +42,22 @@ namespace Jam24
                         problems.AppendLine($"- Finisher '{finishers[i].name}' needs a Collider2D.");
                 }
             }
+
+            if (deadZones != null)
+            {
+                for (int i = 0; i < deadZones.Length; i++)
+                {
+                    if (deadZones[i] == null)
+                        problems.AppendLine($"- Dead Zone element {i} is not assigned.");
+                    else if (deadZones[i].GetComponent<Collider2D>() == null)
+                        problems.AppendLine($"- Dead Zone '{deadZones[i].name}' needs a Collider2D.");
+                    else if (deadZones[i].TryGetComponent(out DeadZone zone) && zone.Targets == 0)
+                        problems.AppendLine($"- Dead Zone '{deadZones[i].name}' must target Player, Flip, or Both.");
+                }
+            }
+
+            if (playerDeathCutscene != null && !playerDeathCutscene.TryValidate(out string cutsceneError))
+                problems.AppendLine($"- Player Death Cutscene: {cutsceneError}");
 
             error = problems.ToString().TrimEnd();
             return error.Length == 0;
