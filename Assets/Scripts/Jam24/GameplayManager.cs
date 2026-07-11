@@ -28,6 +28,7 @@ namespace Jam24
         public event Action<int> FlipCountChanged;
 
         private bool levelFinished;
+        private bool flipRespawnDisabled;
         private LevelDefinition activeDefinition;
         private Coroutine flipRespawnRoutine;
 
@@ -93,6 +94,7 @@ namespace Jam24
             if (!definition.TryValidate(out string definitionError))
                 return FailLevelLoad($"Level '{CurrentLevel.name}' configuration is invalid:\n{definitionError}");
             activeDefinition = definition;
+            flipRespawnDisabled = false;
             RemainingFlips = definition.StartingFlipCount;
             FlipCountChanged?.Invoke(RemainingFlips);
 
@@ -124,10 +126,47 @@ namespace Jam24
                 levelFinished = true;
                 GameFlow.Instance?.Lose();
             }
-            else
+            else if (!flipRespawnDisabled)
             {
                 flipRespawnRoutine = StartCoroutine(RespawnFlip());
             }
+            return true;
+        }
+
+        /// <summary>
+        /// Prevents the current level's Flip from being recreated after a thief
+        /// shark has swept through. Loading a level resets this protection.
+        /// </summary>
+        public void DisableFlipRespawnForCurrentLevel()
+        {
+            flipRespawnDisabled = true;
+            if (flipRespawnRoutine == null) return;
+
+            StopCoroutine(flipRespawnRoutine);
+            flipRespawnRoutine = null;
+        }
+
+        /// <summary>
+        /// Removes the active Flip count when it is stolen by the thief shark,
+        /// without scheduling a replacement Flip.
+        /// </summary>
+        public bool TryStealFlipPermanently(GameObject candidate)
+        {
+            if (levelFinished || Flip == null || candidate == null) return false;
+            if (candidate != Flip && !candidate.transform.IsChildOf(Flip.transform)) return false;
+
+            DisableFlipRespawnForCurrentLevel();
+            Flip = null;
+            RemainingFlips = Mathf.Max(0, RemainingFlips - 1);
+            FlipCountChanged?.Invoke(RemainingFlips);
+            Debug.Log($"Thief Shark stole a Flip permanently. Remaining Flips: {RemainingFlips}.", this);
+
+            if (RemainingFlips <= 0)
+            {
+                levelFinished = true;
+                GameFlow.Instance?.Lose();
+            }
+
             return true;
         }
 
@@ -146,7 +185,7 @@ namespace Jam24
 
         private void SpawnFlip()
         {
-            if (activeDefinition == null || levelFinished) return;
+            if (activeDefinition == null || levelFinished || flipRespawnDisabled) return;
             Flip = Instantiate(flipPrefab, activeDefinition.FlipSpawn.position, activeDefinition.FlipSpawn.rotation, transform);
             Flip.name = flipPrefab.name;
 
