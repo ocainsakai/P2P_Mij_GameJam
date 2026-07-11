@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 71a9225c29d4aaa45a3b9bd995a2f2d3
+guid: e8293cd57c3c1ee44afeb0392e45bddc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -90373579753825746
-    second: 1783758325673_213049648444266533_g2469659841006651796_0eab6cc65e089b337212e40c998f5183-removebg-preview_0
+      213: -3891540790366518293
+    second: Contrast 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 400
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 1783758325673_213049648444266533_g2469659841006651796_0eab6cc65e089b337212e40c998f5183-removebg-preview_0
+      name: Contrast 1_0
       rect:
         serializedVersion: 2
-        x: 82
-        y: 11
-        width: 127
-        height: 840
+        x: 0
+        y: 0
+        width: 301
+        height: 1134
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e2a51b145bdeebef0800000000000000
-      internalID: -90373579753825746
+      spriteID: be3c249f4487ef9c0800000000000000
+      internalID: -3891540790366518293
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      1783758325673_213049648444266533_g2469659841006651796_0eab6cc65e089b337212e40c998f5183-removebg-preview_0: -90373579753825746
+      Contrast 1_0: -3891540790366518293
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
