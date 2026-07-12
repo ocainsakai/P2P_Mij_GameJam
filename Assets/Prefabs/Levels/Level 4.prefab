@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1331460749343926752}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.03, y: -3.73, z: 0}
+  m_LocalPosition: {x: -5.53, y: -4.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 1626081370683209910}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.53, y: -2.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -140,9 +140,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4735091871577910030}
     m_Modifications:
+    - target: {fileID: 2225880224744019240, guid: 4c7878af328a5904ab438db4b768f5a0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 11.0068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2225880224744019240, guid: 4c7878af328a5904ab438db4b768f5a0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5734
+      objectReference: {fileID: 0}
     - target: {fileID: 3381496568510145761, guid: 4c7878af328a5904ab438db4b768f5a0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.35
+      value: 4.82
       objectReference: {fileID: 0}
     - target: {fileID: 4967017030177998486, guid: 4c7878af328a5904ab438db4b768f5a0, type: 3}
       propertyPath: m_Name
@@ -281,13 +289,21 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 3.9499
       objectReference: {fileID: 0}
+    - target: {fileID: 5180313537192037636, guid: cb5413816dd2c154093f9e4bbb066d94, type: 3}
+      propertyPath: autoCycle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5180313537192037636, guid: cb5413816dd2c154093f9e4bbb066d94, type: 3}
+      propertyPath: autoOpenAndStayOpen
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6105045332388292884, guid: cb5413816dd2c154093f9e4bbb066d94, type: 3}
       propertyPath: m_Name
       value: Striped Sea Shell
       objectReference: {fileID: 0}
     - target: {fileID: 8615994246040090082, guid: cb5413816dd2c154093f9e4bbb066d94, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.31
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 8615994246040090082, guid: cb5413816dd2c154093f9e4bbb066d94, type: 3}
       propertyPath: m_LocalPosition.y

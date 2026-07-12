@@ -423,7 +423,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_MaskInteraction: 0
   m_Sprite: {fileID: -4093620233156422854, guid: 04fadd2cb94586b44b85c1a476343414, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -451,7 +451,7 @@ MonoBehaviour:
   verticalAcceleration: 15
   underwaterGravity: 4.8
   waterDrag: 5
-  maxSwimSpeed: 5.6
+  maxSwimSpeed: 8
   climbSpeed: 3
   climbProbePadding: 0.12
   viewportPadding: 0.35

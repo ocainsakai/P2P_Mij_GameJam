@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9050414403304809700}
   - component: {fileID: 6283158436037459211}
   - component: {fileID: 104260501373843335}
+  - component: {fileID: 6723158436037459211}
   m_Layer: 4
   m_Name: Flip
   m_TagString: Untagged
@@ -108,7 +109,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 0.3
   m_LinearDamping: 0.1
-  m_AngularDamping: 0.22
+  m_AngularDamping: 0.1
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -173,3 +174,15 @@ CapsuleCollider2D:
   m_Offset: {x: 0.009330273, y: -0.006220162}
   m_Size: {x: 0.55556333, y: 1.1315442}
   m_Direction: 0
+--- !u!114 &6723158436037459211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4836597993442609622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91a4e313420d4b9ea97208d6932300ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.FlipAreaBuoyancyOverride2D

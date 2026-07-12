@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 1546030969}
   - component: {fileID: 1546030968}
   m_Layer: 0
-  m_Name: Jam24_Loading
+  m_Name: Loading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

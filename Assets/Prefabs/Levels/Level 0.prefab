@@ -123,6 +123,7 @@ MonoBehaviour:
   - {fileID: 1757589694657994365}
   startingFlipCount: 1
   loseWhenFlipTrappedBySeaweed: 1
+  cameraSize: 5
   overrideBuoyancy: 1
   buoyancyEffectors:
   - {fileID: 6939810571553945171}
@@ -424,6 +425,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -2231793383355184896, guid: 6800acbb71f26f348949af618d9421d9, type: 3}
+    - target: {fileID: 3381496568510145761, guid: 4c7878af328a5904ab438db4b768f5a0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.17
+      objectReference: {fileID: 0}
     - target: {fileID: 4195019195368390481, guid: 4c7878af328a5904ab438db4b768f5a0, type: 3}
       propertyPath: m_LocalPosition.y
       value: -2.5

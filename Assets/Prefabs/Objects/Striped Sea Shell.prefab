@@ -148,7 +148,7 @@ AreaEffector2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2375922655158980453}
   m_Enabled: 1
-  m_UseColliderMask: 0
+  m_UseColliderMask: 1
   m_ColliderMask:
     serializedVersion: 2
     m_Bits: 1040
@@ -470,6 +470,8 @@ MonoBehaviour:
   openDuration: 3
   flowStartDelay: 0.2
   flowDuration: 0
+  autoCycle: 0
+  closedDuration: 2
   flowForce: 10
   openSprite: {fileID: 5488115122556987112, guid: 5ef879cc0ddde234488ff6af596d20ef, type: 3}
 --- !u!50 &4744015342225903945

@@ -79,6 +79,8 @@ MonoBehaviour:
   openDuration: 3
   flowStartDelay: 0.2
   flowDuration: 0
+  autoCycle: 0
+  closedDuration: 2
   flowForce: 6
   openSprite: {fileID: 21300000, guid: 5d862b9c6442c514c936dfc2cae6b59e, type: 3}
 --- !u!50 &6648239410872513123

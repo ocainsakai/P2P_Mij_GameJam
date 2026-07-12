@@ -1157,7 +1157,7 @@ MonoBehaviour:
   levelCatalog: {fileID: 11400000, guid: fa795874a7af45a08403d17c16cc4eec, type: 2}
   openShell: {fileID: -8833318414360946330, guid: 9f2edac83fccc2c4190f7a419f46ff6b, type: 3}
   closedShell: {fileID: -7015249124608626846, guid: c4f9128ed3410a7489d52bbc99aabbfe, type: 3}
-  visibleLevels: 10
+  visibleLevels: 9
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

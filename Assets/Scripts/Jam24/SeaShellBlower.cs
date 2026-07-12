@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Jam24
 {
@@ -25,6 +26,8 @@ namespace Jam24
         [SerializeField, Min(.1f)] private float openDuration = 3f;
         [SerializeField, Min(0f)] private float flowStartDelay = .2f;
         [SerializeField, Min(0f)] private float flowDuration;
+        [SerializeField] private bool autoCycle;
+        [SerializeField, Min(0f)] private float closedDuration = 2f;
 
         [Header("Water Current")]
         [SerializeField, Min(0f)] private float flowForce = 12f;
@@ -47,13 +50,17 @@ namespace Jam24
             if (shellRenderer != null) closedSprite = shellRenderer.sprite;
             if (waterEffector != null)
             {
-                waterEffector.useColliderMask = false;
                 waterEffector.useGlobalAngle = false;
                 waterEffector.forceMagnitude = flowForce;
                 waterEffector.forceVariation = 0f;
             }
 
             ApplyClosedState();
+        }
+
+        private void OnEnable()
+        {
+            if (autoCycle) activeRoutine = StartCoroutine(AutoCycle());
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -75,11 +82,34 @@ namespace Jam24
         public void Activate()
         {
             if (!isActiveAndEnabled) return;
-            if (activeRoutine != null) StopCoroutine(activeRoutine);
+            if (autoCycle) return;
+
+            if (activeRoutine != null)
+            {
+                StopCoroutine(activeRoutine);
+                activeRoutine = null;
+            }
+
             activeRoutine = StartCoroutine(OpenForDuration());
         }
 
         private IEnumerator OpenForDuration()
+        {
+            yield return RunOpenCycle();
+            activeRoutine = null;
+        }
+
+        private IEnumerator AutoCycle()
+        {
+            while (true)
+            {
+                ApplyClosedState();
+                if (closedDuration > 0f) yield return new WaitForSeconds(closedDuration);
+                yield return RunOpenCycle();
+            }
+        }
+
+        private IEnumerator RunOpenCycle()
         {
             IsOpen = true;
             if (shellAnimator != null) shellAnimator.SetBool(IsOpenParameter, true);
@@ -96,7 +126,6 @@ namespace Jam24
             IsOpen = false;
             if (shellAnimator != null) shellAnimator.SetBool(IsOpenParameter, false);
             if (shellRenderer != null && closedSprite != null) shellRenderer.sprite = closedSprite;
-            activeRoutine = null;
         }
 
         private void OnDisable()
@@ -129,6 +158,7 @@ namespace Jam24
             openDuration = Mathf.Max(.1f, openDuration);
             flowStartDelay = Mathf.Clamp(flowStartDelay, 0f, openDuration);
             flowDuration = Mathf.Max(0f, flowDuration);
+            closedDuration = Mathf.Max(0f, closedDuration);
             if (waterEffector != null) waterEffector.forceMagnitude = flowForce;
         }
     }
