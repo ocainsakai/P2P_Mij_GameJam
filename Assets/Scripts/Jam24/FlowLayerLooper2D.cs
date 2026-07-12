@@ -74,6 +74,9 @@ namespace Jam24
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            Rigidbody2D body = other.attachedRigidbody;
+            if (body != null) SeaweedTrap2D.TryReleaseHeldFlip(body, this);
+
             SeaweedTrap2D trap = other.GetComponentInParent<SeaweedTrap2D>();
             if (trap == null) return;
 
