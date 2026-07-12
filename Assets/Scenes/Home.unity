@@ -1196,6 +1196,7 @@ MonoBehaviour:
   openShell: {fileID: -8833318414360946330, guid: 9f2edac83fccc2c4190f7a419f46ff6b, type: 3}
   closedShell: {fileID: -7015249124608626846, guid: c4f9128ed3410a7489d52bbc99aabbfe, type: 3}
   visibleLevels: 10
+  unlockAllLevelsForTesting: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

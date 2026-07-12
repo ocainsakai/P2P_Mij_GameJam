@@ -14,6 +14,7 @@ namespace Jam24
         [SerializeField] private Sprite openShell;
         [SerializeField] private Sprite closedShell;
         [SerializeField, Min(1)] private int visibleLevels = 8;
+        [SerializeField] private bool unlockAllLevelsForTesting;
 
         private RectTransform animatedHolder;
         private GridLayoutGroup levelGrid;
@@ -127,7 +128,7 @@ namespace Jam24
             for (int i = 0; i < levelGrid.transform.childCount; i++)
             {
                 Transform slot = levelGrid.transform.GetChild(i);
-                bool unlocked = SaveData.IsUnlocked(i);
+                bool unlocked = IsLevelUnlocked(i);
                 Image image = slot.GetComponent<Image>();
                 Button button = slot.GetComponent<Button>();
                 Text number = slot.Find("Number")?.GetComponent<Text>();
@@ -160,8 +161,11 @@ namespace Jam24
 
         private void PlayLevel(int index)
         {
-            if (SaveData.IsUnlocked(index)) GameFlow.Instance?.PlayLevel(index);
+            if (IsLevelUnlocked(index)) GameFlow.Instance?.PlayLevel(index);
         }
+
+        private bool IsLevelUnlocked(int index) =>
+            Application.isEditor || unlockAllLevelsForTesting || SaveData.IsUnlocked(index);
 
         private IEnumerator Animate(bool opening)
         {
