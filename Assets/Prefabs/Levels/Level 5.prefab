@@ -233,6 +233,7 @@ MonoBehaviour:
   extraLinearDamping: 6
   pullToCenterDuration: 0.25
   trappedXOffset: 0
+  currentReleaseSpeed: 3.5
 --- !u!50 &5660230824769525969
 Rigidbody2D:
   serializedVersion: 5
@@ -3692,6 +3693,7 @@ MonoBehaviour:
   extraLinearDamping: 6
   pullToCenterDuration: 0.25
   trappedXOffset: 0
+  currentReleaseSpeed: 3.5
 --- !u!50 &505838560958659466
 Rigidbody2D:
   serializedVersion: 5
@@ -4865,6 +4867,7 @@ MonoBehaviour:
   finishers:
   - {fileID: 1757589694657994365}
   startingFlipCount: 1
+  requiredFlipCount: 1
   loseWhenFlipTrappedBySeaweed: 0
   cameraSize: 6
   overrideBuoyancy: 0
@@ -5272,7 +5275,7 @@ BuoyancyEffector2D:
     serializedVersion: 2
     m_Bits: 1040
   m_SurfaceLevel: 1
-  m_Density: 1.2
+  m_Density: 0.9
   m_LinearDamping: 2
   m_AngularDamping: 1.2
   m_FlowAngle: 0
