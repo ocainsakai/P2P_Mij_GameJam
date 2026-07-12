@@ -6,7 +6,7 @@ namespace Jam24
 {
     /// <summary>
     /// A vertically bobbing jellyfish. Touching the trigger above its head
-    /// launches the player in a straight line at the configured angle.
+    /// launches the player or Flip in a straight line at the configured angle.
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
@@ -77,60 +77,64 @@ namespace Jam24
         private void TryBounce(Collider2D other)
         {
             OctopusPlayerMovement movement = other.GetComponentInParent<OctopusPlayerMovement>();
-            if (movement == null) return;
+            bool isFlip = other.GetComponentInParent<FlipWallBounce2D>() != null ||
+                          GameplayManager.Instance != null && GameplayManager.Instance.IsFlip(other.gameObject);
+            if (movement == null && !isFlip) return;
 
-            Rigidbody2D playerBody = movement.GetComponent<Rigidbody2D>();
-            if (playerBody == null || activeLaunches.ContainsKey(playerBody)) return;
-            if (nextLaunchTimes.TryGetValue(playerBody, out float nextTime) && Time.time < nextTime) return;
+            Rigidbody2D launchedBody = other.attachedRigidbody;
+            if (launchedBody == null && movement != null)
+                launchedBody = movement.GetComponent<Rigidbody2D>();
+            if (launchedBody == null || activeLaunches.ContainsKey(launchedBody)) return;
+            if (nextLaunchTimes.TryGetValue(launchedBody, out float nextTime) && Time.time < nextTime) return;
 
             float jellyfishY = jellyfishBody != null ? jellyfishBody.position.y : transform.position.y;
-            if (playerBody.worldCenterOfMass.y < jellyfishY + minimumTopHeight) return;
+            if (launchedBody.worldCenterOfMass.y < jellyfishY + minimumTopHeight) return;
 
-            StartCoroutine(BouncePlayer(playerBody, movement));
+            StartCoroutine(BounceBody(launchedBody, movement));
         }
 
-        private IEnumerator BouncePlayer(Rigidbody2D playerBody, OctopusPlayerMovement movement)
+        private IEnumerator BounceBody(Rigidbody2D launchedBody, OctopusPlayerMovement movement)
         {
             LaunchState state = new()
             {
-                BodyType = playerBody.bodyType,
-                MovementWasEnabled = movement.enabled,
+                BodyType = launchedBody.bodyType,
+                MovementWasEnabled = movement != null && movement.enabled,
                 Movement = movement
             };
-            activeLaunches.Add(playerBody, state);
+            activeLaunches.Add(launchedBody, state);
 
-            movement.enabled = false;
-            playerBody.linearVelocity = Vector2.zero;
-            playerBody.angularVelocity = 0f;
-            playerBody.bodyType = RigidbodyType2D.Kinematic;
+            if (movement != null) movement.enabled = false;
+            launchedBody.linearVelocity = Vector2.zero;
+            launchedBody.angularVelocity = 0f;
+            launchedBody.bodyType = RigidbodyType2D.Kinematic;
 
             float radians = bounceAngle * Mathf.Deg2Rad;
             Vector2 direction = new(Mathf.Cos(radians), Mathf.Sin(radians));
-            Vector2 start = playerBody.position;
+            Vector2 start = launchedBody.position;
             Vector2 end = start + direction * bounceDistance;
             float elapsed = 0f;
 
-            while (elapsed < bounceDuration && playerBody != null)
+            while (elapsed < bounceDuration && launchedBody != null)
             {
                 elapsed += Time.fixedDeltaTime;
                 float t = Mathf.Clamp01(elapsed / bounceDuration);
                 float easedT = 1f - (1f - t) * (1f - t);
-                playerBody.MovePosition(Vector2.Lerp(start, end, easedT));
+                launchedBody.MovePosition(Vector2.Lerp(start, end, easedT));
                 yield return new WaitForFixedUpdate();
             }
 
-            if (playerBody != null)
+            if (launchedBody != null)
             {
-                playerBody.position = end;
-                RestorePlayer(playerBody, state);
-                playerBody.linearVelocity = direction;
-                nextLaunchTimes[playerBody] = Time.time + relaunchCooldown;
+                launchedBody.position = end;
+                RestoreBody(launchedBody, state);
+                launchedBody.linearVelocity = direction;
+                nextLaunchTimes[launchedBody] = Time.time + relaunchCooldown;
             }
 
-            activeLaunches.Remove(playerBody);
+            activeLaunches.Remove(launchedBody);
         }
 
-        private static void RestorePlayer(Rigidbody2D body, LaunchState state)
+        private static void RestoreBody(Rigidbody2D body, LaunchState state)
         {
             body.bodyType = state.BodyType;
             if (state.Movement != null) state.Movement.enabled = state.MovementWasEnabled;
@@ -142,7 +146,7 @@ namespace Jam24
 
             foreach (KeyValuePair<Rigidbody2D, LaunchState> pair in activeLaunches)
             {
-                if (pair.Key != null) RestorePlayer(pair.Key, pair.Value);
+                if (pair.Key != null) RestoreBody(pair.Key, pair.Value);
             }
 
             activeLaunches.Clear();

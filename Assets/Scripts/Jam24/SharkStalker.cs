@@ -39,6 +39,7 @@ namespace Jam24
         private float warningTimer;
         private SharkState state;
         private Color normalColor;
+        private bool loseCutscenePlayed;
 
         private void Awake()
         {
@@ -67,10 +68,31 @@ namespace Jam24
 
         private void OnEnable()
         {
+            GameFlow.StateChanged += HandleGameStateChanged;
             patrolOrigin = sharkBody.position;
             state = SharkState.Patrolling;
             target = null;
             warningTimer = 0f;
+            loseCutscenePlayed = false;
+        }
+
+        private void OnDisable()
+        {
+            GameFlow.StateChanged -= HandleGameStateChanged;
+        }
+
+        private void HandleGameStateChanged(GameState gameState)
+        {
+            if (gameState != GameState.Lose || loseCutscenePlayed) return;
+            loseCutscenePlayed = true;
+            StartCoroutine(PlayLoseCutscene());
+        }
+
+        private IEnumerator PlayLoseCutscene()
+        {
+            SetWarningVisible(false);
+            if (cutsceneManager != null && attackSequence != null)
+                yield return cutsceneManager.Play(attackSequence);
         }
 
         private void Update()
@@ -182,6 +204,7 @@ namespace Jam24
             }
 
             if (bitePause > 0f) yield return new WaitForSeconds(bitePause);
+            loseCutscenePlayed = true;
             if (cutsceneManager != null && attackSequence != null)
                 yield return cutsceneManager.Play(attackSequence);
 
