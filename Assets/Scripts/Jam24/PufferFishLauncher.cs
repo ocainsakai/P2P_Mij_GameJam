@@ -178,6 +178,7 @@ namespace Jam24
                 Movement = movement
             };
             activeLaunches.Add(launchedBody, state);
+            JamAudioManager.Play(GameSfxType.PufferFishBounce);
 
             if (movement != null) movement.enabled = false;
             launchedBody.linearVelocity = Vector2.zero;

@@ -434,6 +434,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2681961862652182097, guid: 869090959f55cb444a9383a7e67f1d20, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3338735458366571801, guid: 869090959f55cb444a9383a7e67f1d20, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -689,7 +693,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4186542557933985865, guid: 869090959f55cb444a9383a7e67f1d20, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 559386638}
   m_SourcePrefab: {fileID: 100100000, guid: 869090959f55cb444a9383a7e67f1d20, type: 3}
 --- !u!224 &559386633 stripped
 RectTransform:
@@ -701,6 +708,21 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4186542557933985865, guid: 869090959f55cb444a9383a7e67f1d20, type: 3}
   m_PrefabInstance: {fileID: 559386632}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &559386638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559386634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21a0ca5dc28405ab6b9b26682bc0db3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.UIButtonSfx
+  sfxType: 1
+  overrideClip: {fileID: 0}
+  volumeScale: 1
 --- !u!1 &659363209
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,6 +857,7 @@ GameObject:
   - component: {fileID: 1508011266}
   - component: {fileID: 1508011265}
   - component: {fileID: 1508011267}
+  - component: {fileID: 1508011268}
   m_Layer: 0
   m_Name: Play
   m_TagString: Untagged
@@ -943,6 +966,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1508011268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508011263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21a0ca5dc28405ab6b9b26682bc0db3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.UIButtonSfx
+  sfxType: 3
+  overrideClip: {fileID: 0}
+  volumeScale: 1
 --- !u!1 &1533974208
 GameObject:
   m_ObjectHideFlags: 0

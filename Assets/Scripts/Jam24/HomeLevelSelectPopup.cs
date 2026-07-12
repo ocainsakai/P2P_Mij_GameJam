@@ -103,6 +103,7 @@ namespace Jam24
             Button button = slot.GetComponent<Button>();
             button.targetGraphic = image;
             button.transition = Selectable.Transition.ColorTint;
+            slot.AddComponent<UIButtonSfx>();
 
             int captured = index;
             button.onClick.AddListener(() => PlayLevel(captured));

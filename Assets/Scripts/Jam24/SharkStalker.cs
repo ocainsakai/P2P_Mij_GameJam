@@ -138,6 +138,7 @@ namespace Jam24
             bool warnImmediately = warningDuration <= warningLeadTime;
             SetWarningVisible(warnImmediately);
             if (warnImmediately) SetWarningText($"WARNING!\nSHARK IN {warningDuration:0.0}s");
+            JamAudioManager.Play(GameSfxType.SharkWarning);
             Debug.Log($"Shark Stalker: player entered danger zone. Attack in {warningDuration:0.0}s.", this);
         }
 
@@ -169,6 +170,7 @@ namespace Jam24
             SetWarningVisible(true);
             SetWarningText("SHARK ATTACK!");
             bodyRenderer.color = new Color(1f, .42f, .42f, 1f);
+            JamAudioManager.Play(GameSfxType.SharkAttack);
             Debug.Log("Shark Stalker: countdown expired, attacking player.", this);
         }
 
@@ -193,6 +195,7 @@ namespace Jam24
             if (state == SharkState.Recovering) yield break;
             state = SharkState.Recovering;
             SetWarningText("CHOMP!");
+            JamAudioManager.Play(GameSfxType.SharkBite);
 
             OctopusPlayerMovement bittenPlayer = target;
             target = null;

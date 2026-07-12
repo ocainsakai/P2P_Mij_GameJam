@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a56f0a03cf4e55aeedc3e8b243cf02, type: 3}
+  m_Name: JamSfxConfig
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.JamSfxConfig
+  uiEntries:
+  - type: 0
+    clip: {fileID: 8300000, guid: 8ae69a865125a4d649a803a400439b45, type: 3}
+    volumeScale: 0.8
+    startOffset: 0
+  - type: 1
+    clip: {fileID: 8300000, guid: f69ce68e359d048da8e036feadc9e6dd, type: 3}
+    volumeScale: 0.75
+    startOffset: 0
+  - type: 2
+    clip: {fileID: 8300000, guid: 93886f0730d93455888a089599217469, type: 3}
+    volumeScale: 0.85
+    startOffset: 0
+  - type: 3
+    clip: {fileID: 0}
+    volumeScale: 1
+    startOffset: 0
+  - type: 4
+    clip: {fileID: 8300000, guid: 282544d505c8a466ca0283b1fc917e4a, type: 3}
+    volumeScale: 0.7
+    startOffset: 0
+  - type: 5
+    clip: {fileID: 8300000, guid: f69ce68e359d048da8e036feadc9e6dd, type: 3}
+    volumeScale: 0.65
+    startOffset: 0
+  gameEntries:
+  - type: 0
+    clip: {fileID: 8300000, guid: b569aada900f14e438e0ff052d4e7f45, type: 3}
+    volumeScale: 0.75
+  - type: 1
+    clip: {fileID: 8300000, guid: 3c4a037e447d54038878797f8c6d9d90, type: 3}
+    volumeScale: 0.7
+  - type: 2
+    clip: {fileID: 8300000, guid: 50e5d54a69d6b4543a016c665e9f12c6, type: 3}
+    volumeScale: 0.8
+  - type: 3
+    clip: {fileID: 8300000, guid: 8e964b715a811464e82529c35987d43b, type: 3}
+    volumeScale: 0.8
+  - type: 4
+    clip: {fileID: 8300000, guid: 24ce61b7511f443e58aa606e96936277, type: 3}
+    volumeScale: 0.8
+  - type: 5
+    clip: {fileID: 8300000, guid: 495ebbcb6c41d424bb9e00d3eddb5fe4, type: 3}
+    volumeScale: 0.85
+  - type: 6
+    clip: {fileID: 8300000, guid: c1f47c4aad5f14a138bf7c0467396b25, type: 3}
+    volumeScale: 0.85
+  - type: 7
+    clip: {fileID: 8300000, guid: ed697055848ca4753a8faecacf8940a5, type: 3}
+    volumeScale: 0.95
+  - type: 8
+    clip: {fileID: 8300000, guid: 63aaa33e00f12447989b15ba6a803b35, type: 3}
+    volumeScale: 1
+  - type: 9
+    clip: {fileID: 8300000, guid: 3b6c971388bbd4df59bdcb9cc07c2190, type: 3}
+    volumeScale: 0.9
+  - type: 10
+    clip: {fileID: 8300000, guid: 4827dd82a6ce74d34b74037ca95666ee, type: 3}
+    volumeScale: 1
+  - type: 11
+    clip: {fileID: 8300000, guid: 8e8468c915f6243b0836a57e32a35a07, type: 3}
+    volumeScale: 0.9
+  musicEntries:
+  - type: 0
+    clip: {fileID: 8300000, guid: c351f11591f4ae84e867fbd3088e6614, type: 3}
+    volumeScale: 0.72
+  - type: 1
+    clip: {fileID: 8300000, guid: c351f11591f4ae84e867fbd3088e6614, type: 3}
+    volumeScale: 0.72
+  - type: 2
+    clip: {fileID: 8300000, guid: 543f8e97722c42b45a6dcd6fd5bc62b7, type: 3}
+    volumeScale: 0.62
+  ambienceEntries:
+  - type: 0
+    clip: {fileID: 8300000, guid: 25948fff3ec821d419432d2b296ef8b1, type: 3}
+    volumeScale: 0.18

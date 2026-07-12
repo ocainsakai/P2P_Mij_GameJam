@@ -112,6 +112,7 @@ namespace Jam24
         private IEnumerator RunOpenCycle()
         {
             IsOpen = true;
+            JamAudioManager.Play(GameSfxType.ShellOpen);
             if (shellAnimator != null) shellAnimator.SetBool(IsOpenParameter, true);
             if (openSprite != null && shellRenderer != null) shellRenderer.sprite = openSprite;
 
@@ -124,6 +125,7 @@ namespace Jam24
 
             SetFlowActive(false);
             IsOpen = false;
+            JamAudioManager.Play(GameSfxType.ShellClose);
             if (shellAnimator != null) shellAnimator.SetBool(IsOpenParameter, false);
             if (shellRenderer != null && closedSprite != null) shellRenderer.sprite = closedSprite;
         }

@@ -111,6 +111,7 @@ namespace Jam24
             };
             activeLaunches.Add(launchedBody, state);
             LaunchedBodies[launchedBody] = bounceDistance / bounceDuration;
+            JamAudioManager.Play(GameSfxType.JellyfishBounce);
 
             if (movement != null) movement.enabled = false;
             launchedBody.linearVelocity = Vector2.zero;

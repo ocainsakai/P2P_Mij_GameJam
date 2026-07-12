@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 5809267347789073870}
   - component: {fileID: 9203012599988158569}
   - component: {fileID: 5257414717337576908}
+  - component: {fileID: 9203012599988158570}
   m_Layer: 0
   m_Name: LevelCard
   m_TagString: Untagged
@@ -166,6 +167,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.AspectRatioFitter
   m_AspectMode: 3
   m_AspectRatio: 1.7776698
+--- !u!114 &9203012599988158570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4114792434717663282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21a0ca5dc28405ab6b9b26682bc0db3, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.UIButtonSfx
+  sfxType: 0
+  overrideClip: {fileID: 0}
+  volumeScale: 1
 --- !u!1 &4186542557933985865
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +194,7 @@ GameObject:
   - component: {fileID: 4574062057167539514}
   - component: {fileID: 5028529118159019423}
   - component: {fileID: 6606144640564609630}
+  - component: {fileID: 6606144640564609631}
   m_Layer: 0
   m_Name: Select level
   m_TagString: Untagged
@@ -287,6 +304,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6606144640564609631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4186542557933985865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21a0ca5dc28405ab6b9b26682bc0db3, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::Jam24.UIButtonSfx
+  sfxType: 1
+  overrideClip: {fileID: 0}
+  volumeScale: 1
 --- !u!1 &4985459018135338090
 GameObject:
   m_ObjectHideFlags: 0

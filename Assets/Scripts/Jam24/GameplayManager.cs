@@ -227,6 +227,7 @@ namespace Jam24
             activeFlips.Remove(deliveredFlip);
             if (deliveredFlip == Flip) Flip = null;
             deliveredFlipCount++;
+            JamAudioManager.Play(GameSfxType.FlipDelivered);
             Destroy(deliveredFlip);
 
             if (deliveredFlipCount < activeDefinition.RequiredFlipCount)

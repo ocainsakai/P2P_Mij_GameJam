@@ -119,6 +119,7 @@ MonoBehaviour:
   finishers:
   - {fileID: 1757589694657994365}
   startingFlipCount: 1
+  requiredFlipCount: 1
   loseWhenFlipTrappedBySeaweed: 0
   cameraSize: 5
   overrideBuoyancy: 0

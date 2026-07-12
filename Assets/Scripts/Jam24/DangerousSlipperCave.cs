@@ -71,10 +71,12 @@ namespace Jam24
         {
             OctopusPlayerMovement movement = other.GetComponentInParent<OctopusPlayerMovement>();
             if (movement == null) return;
+            JamAudioManager.Play(GameSfxType.CaveImpact);
 
             if (!rewardReleased && CanReleaseReward(movement))
             {
                 rewardReleased = true;
+                JamAudioManager.Play(GameSfxType.CaveReward);
                 if (!RevealStoredFlip())
                     GameplayManager.Instance?.SpawnAdditionalFlip(flipSpawnPoint);
             }
