@@ -19,6 +19,9 @@ namespace Jam24
         [SerializeField] private Transform tentacleOrigin;
         [SerializeField] private Transform flipSpawnPoint;
 
+        [Header("Slipper Reward")]
+        [SerializeField] private bool hideFlipUntilPlayerEntry = true;
+
         [Header("Attack Timing")]
         [SerializeField, Min(.1f)] private float warningDuration = 1.2f;
         [SerializeField, Min(.05f)] private float extendDuration = .16f;
@@ -47,6 +50,7 @@ namespace Jam24
         private Coroutine attackRoutine;
         private LineRenderer tentacleLine;
         private Material runtimeTentacleMaterial;
+        private GameObject storedFlip;
         private Color normalCaveColor;
         private Vector3 normalCaveScale;
 
@@ -65,9 +69,41 @@ namespace Jam24
             OctopusPlayerMovement movement = other.GetComponentInParent<OctopusPlayerMovement>();
             if (movement == null) return;
 
+            if (!RevealStoredFlip())
+                GameplayManager.Instance?.SpawnAdditionalFlip(flipSpawnPoint);
             playerInside = movement;
             if (attackRoutine == null)
                 attackRoutine = StartCoroutine(AttackLoop(movement));
+        }
+
+        public void StoreFlipUntilPlayerEnters(GameObject flip)
+        {
+            if (!hideFlipUntilPlayerEntry || flip == null || flipSpawnPoint == null) return;
+
+            storedFlip = flip;
+            storedFlip.transform.SetPositionAndRotation(
+                flipSpawnPoint.position,
+                flipSpawnPoint.rotation);
+            storedFlip.SetActive(false);
+        }
+
+        private bool RevealStoredFlip()
+        {
+            if (storedFlip == null) return false;
+
+            GameObject flip = storedFlip;
+            storedFlip = null;
+            flip.transform.SetPositionAndRotation(
+                flipSpawnPoint.position,
+                flipSpawnPoint.rotation);
+            flip.SetActive(true);
+
+            Rigidbody2D flipBody = flip.GetComponent<Rigidbody2D>();
+            if (flipBody == null) return true;
+            flipBody.linearVelocity = Vector2.zero;
+            flipBody.angularVelocity = 0f;
+            flipBody.WakeUp();
+            return true;
         }
 
         private void OnTriggerExit2D(Collider2D other)

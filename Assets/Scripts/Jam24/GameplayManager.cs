@@ -40,6 +40,7 @@ namespace Jam24
         private Coroutine flipRespawnRoutine;
         private int nextFlipSpawnIndex;
         private GameObject activeFishSchool;
+        private readonly System.Collections.Generic.HashSet<GameObject> activeFlips = new();
 
         // private void LateUpdate()
         // {
@@ -129,11 +130,11 @@ namespace Jam24
 
         public bool TryConsumeFlip(GameObject candidate)
         {
-            if (levelFinished || Flip == null || candidate == null) return false;
-            if (candidate != Flip && !candidate.transform.IsChildOf(Flip.transform)) return false;
+            if (levelFinished || !TryGetTrackedFlip(candidate, out GameObject lostFlip)) return false;
 
-            GameObject lostFlip = Flip;
-            Flip = null;
+            bool lostPrimaryFlip = lostFlip == Flip;
+            activeFlips.Remove(lostFlip);
+            if (lostPrimaryFlip) Flip = null;
             RemainingFlips = Mathf.Max(0, RemainingFlips - 1);
             FlipCountChanged?.Invoke(RemainingFlips);
             Debug.Log($"Grab Crab stole a Flip. Remaining Flips: {RemainingFlips}.", this);
@@ -144,7 +145,7 @@ namespace Jam24
                 levelFinished = true;
                 GameFlow.Instance?.Lose();
             }
-            else if (!flipRespawnDisabled)
+            else if (lostPrimaryFlip && !flipRespawnDisabled)
             {
                 flipRespawnRoutine = StartCoroutine(RespawnFlip());
             }
@@ -153,8 +154,7 @@ namespace Jam24
 
         public bool IsFlip(GameObject candidate)
         {
-            return Flip != null && candidate != null &&
-                   (candidate == Flip || candidate.transform.IsChildOf(Flip.transform));
+            return TryGetTrackedFlip(candidate, out _);
         }
 
         public bool TryLosePlayer(GameObject candidate)
@@ -197,11 +197,11 @@ namespace Jam24
         /// </summary>
         public bool TryStealFlipPermanently(GameObject candidate)
         {
-            if (levelFinished || Flip == null || candidate == null) return false;
-            if (candidate != Flip && !candidate.transform.IsChildOf(Flip.transform)) return false;
+            if (levelFinished || !TryGetTrackedFlip(candidate, out GameObject stolenFlip)) return false;
 
             DisableFlipRespawnForCurrentLevel();
-            Flip = null;
+            activeFlips.Remove(stolenFlip);
+            if (stolenFlip == Flip) Flip = null;
             RemainingFlips = Mathf.Max(0, RemainingFlips - 1);
             FlipCountChanged?.Invoke(RemainingFlips);
             Debug.Log($"Thief Shark stole a Flip permanently. Remaining Flips: {RemainingFlips}.", this);
@@ -241,6 +241,7 @@ namespace Jam24
 
             Flip = Instantiate(flipPrefab, spawn.position, spawn.rotation, transform);
             Flip.name = flipPrefab.name;
+            activeFlips.Add(Flip);
 
             foreach (Transform finisherTransform in activeDefinition.Finishers)
             {
@@ -248,8 +249,41 @@ namespace Jam24
                 trigger.isTrigger = true;
                 FinishZone finishZone = finisherTransform.GetComponent<FinishZone>();
                 if (finishZone == null) finishZone = finisherTransform.gameObject.AddComponent<FinishZone>();
-                finishZone.Configure(Flip, HandleFlipFinished);
+                finishZone.Configure(IsFlip, HandleFlipFinished);
             }
+
+            DangerousSlipperCave slipperCave = spawn.GetComponentInParent<DangerousSlipperCave>();
+            if (slipperCave != null)
+                slipperCave.StoreFlipUntilPlayerEnters(Flip);
+        }
+
+        public GameObject SpawnAdditionalFlip(Transform spawn)
+        {
+            if (activeDefinition == null || levelFinished || flipPrefab == null || spawn == null)
+                return null;
+
+            GameObject extraFlip = Instantiate(flipPrefab, spawn.position, spawn.rotation, transform);
+            extraFlip.name = flipPrefab.name;
+            activeFlips.Add(extraFlip);
+            return extraFlip;
+        }
+
+        private bool TryGetTrackedFlip(GameObject candidate, out GameObject trackedFlip)
+        {
+            trackedFlip = null;
+            if (candidate == null) return false;
+
+            foreach (GameObject activeFlip in activeFlips)
+            {
+                if (activeFlip == null) continue;
+                if (candidate == activeFlip || candidate.transform.IsChildOf(activeFlip.transform))
+                {
+                    trackedFlip = activeFlip;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private IEnumerator RespawnFlip()
@@ -363,7 +397,9 @@ namespace Jam24
             }
             if (CurrentLevel != null) Destroy(CurrentLevel);
             if (Player != null) Destroy(Player);
-            if (Flip != null) Destroy(Flip);
+            foreach (GameObject activeFlip in activeFlips)
+                if (activeFlip != null) Destroy(activeFlip);
+            activeFlips.Clear();
             if (activeFishSchool != null) Destroy(activeFishSchool);
             CurrentLevel = null;
             activeDefinition = null;
