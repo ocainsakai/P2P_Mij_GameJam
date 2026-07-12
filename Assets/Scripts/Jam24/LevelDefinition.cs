@@ -18,6 +18,7 @@ namespace Jam24
 
         [Header("Rules")]
         [SerializeField, Min(1)] public int startingFlipCount = 3;
+        [SerializeField, Min(1)] private int requiredFlipCount = 1;
         [SerializeField] private bool loseWhenFlipTrappedBySeaweed;
 
         [Header("Camera")]
@@ -44,6 +45,7 @@ namespace Jam24
                 : legacyFlipSpawn != null ? new[] { legacyFlipSpawn } : System.Array.Empty<Transform>();
         public Transform[] Finishers => finishers;
         public int StartingFlipCount => Mathf.Max(1, startingFlipCount);
+        public int RequiredFlipCount => Mathf.Max(1, requiredFlipCount);
         public bool LoseWhenFlipTrappedBySeaweed => loseWhenFlipTrappedBySeaweed;
         public float CameraSize => Mathf.Max(0.1f, cameraSize);
         public Transform[] DeadZones => deadZones;
@@ -146,6 +148,7 @@ namespace Jam24
         private void OnValidate()
         {
             startingFlipCount = Mathf.Max(1, startingFlipCount);
+            requiredFlipCount = Mathf.Max(1, requiredFlipCount);
             cameraSize = Mathf.Max(0.1f, cameraSize);
             buoyancyDensity = Mathf.Max(0f, buoyancyDensity);
             buoyancyLinearDamping = Mathf.Max(0f, buoyancyLinearDamping);

@@ -21,6 +21,8 @@ namespace Jam24
 
         [Header("Slipper Reward")]
         [SerializeField] private bool hideFlipUntilPlayerEntry = true;
+        [SerializeField] private bool requireJellyfishLaunch;
+        [SerializeField, Min(0f)] private float minimumImpactSpeed = 3.5f;
 
         [Header("Attack Timing")]
         [SerializeField, Min(.1f)] private float warningDuration = 1.2f;
@@ -51,6 +53,7 @@ namespace Jam24
         private LineRenderer tentacleLine;
         private Material runtimeTentacleMaterial;
         private GameObject storedFlip;
+        private bool rewardReleased;
         private Color normalCaveColor;
         private Vector3 normalCaveScale;
 
@@ -69,11 +72,27 @@ namespace Jam24
             OctopusPlayerMovement movement = other.GetComponentInParent<OctopusPlayerMovement>();
             if (movement == null) return;
 
-            if (!RevealStoredFlip())
-                GameplayManager.Instance?.SpawnAdditionalFlip(flipSpawnPoint);
+            if (!rewardReleased && CanReleaseReward(movement))
+            {
+                rewardReleased = true;
+                if (!RevealStoredFlip())
+                    GameplayManager.Instance?.SpawnAdditionalFlip(flipSpawnPoint);
+            }
+
             playerInside = movement;
             if (attackRoutine == null)
                 attackRoutine = StartCoroutine(AttackLoop(movement));
+        }
+
+        private bool CanReleaseReward(OctopusPlayerMovement movement)
+        {
+            Rigidbody2D playerBody = movement.GetComponent<Rigidbody2D>();
+            if (playerBody == null) return false;
+            if (requireJellyfishLaunch && !JellyfishLauncher.IsLaunching(playerBody)) return false;
+            float impactSpeed = Mathf.Max(
+                playerBody.linearVelocity.magnitude,
+                JellyfishLauncher.GetLaunchSpeed(playerBody));
+            return impactSpeed >= minimumImpactSpeed;
         }
 
         public void StoreFlipUntilPlayerEnters(GameObject flip)
@@ -355,6 +374,7 @@ namespace Jam24
             knockbackSpeed = Mathf.Max(.1f, knockbackSpeed);
             knockbackLift = Mathf.Max(0f, knockbackLift);
             movementLockDuration = Mathf.Max(.05f, movementLockDuration);
+            minimumImpactSpeed = Mathf.Max(0f, minimumImpactSpeed);
             tentacleWidth = Mathf.Max(.05f, tentacleWidth);
             tentacleSegments = Mathf.Clamp(tentacleSegments, 6, 24);
             tentacleCurve = Mathf.Max(0f, tentacleCurve);

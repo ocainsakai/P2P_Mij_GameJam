@@ -39,6 +39,7 @@ namespace Jam24
         private LevelDefinition activeDefinition;
         private Coroutine flipRespawnRoutine;
         private int nextFlipSpawnIndex;
+        private int deliveredFlipCount;
         private GameObject activeFishSchool;
         private readonly System.Collections.Generic.HashSet<GameObject> activeFlips = new();
 
@@ -113,6 +114,7 @@ namespace Jam24
 
             flipRespawnDisabled = false;
             nextFlipSpawnIndex = 0;
+            deliveredFlipCount = 0;
             RemainingFlips = definition.StartingFlipCount;
             FlipCountChanged?.Invoke(RemainingFlips);
 
@@ -218,9 +220,21 @@ namespace Jam24
         public bool IsValidLevelIndex(int levelIndex) =>
             GetLevelPrefab(levelIndex) != null;
 
-        private void HandleFlipFinished()
+        private void HandleFlipFinished(GameObject candidate)
         {
-            if (levelFinished) return;
+            if (levelFinished || !TryGetTrackedFlip(candidate, out GameObject deliveredFlip)) return;
+
+            activeFlips.Remove(deliveredFlip);
+            if (deliveredFlip == Flip) Flip = null;
+            deliveredFlipCount++;
+            Destroy(deliveredFlip);
+
+            if (deliveredFlipCount < activeDefinition.RequiredFlipCount)
+            {
+                Debug.Log($"Delivered Flip {deliveredFlipCount}/{activeDefinition.RequiredFlipCount}.", this);
+                return;
+            }
+
             levelFinished = true;
 
             if (GameFlow.Instance == null) return;

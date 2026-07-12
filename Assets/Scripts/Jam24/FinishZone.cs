@@ -9,6 +9,7 @@ namespace Jam24
         private GameObject targetFlip;
         private Func<GameObject, bool> matchesFlip;
         private Action reached;
+        private Action<GameObject> reachedWithObject;
         private bool completed;
 
         public void Configure(GameObject flip, Action onReached)
@@ -16,15 +17,17 @@ namespace Jam24
             targetFlip = flip;
             matchesFlip = null;
             reached = onReached;
+            reachedWithObject = null;
             completed = false;
             GetComponent<Collider2D>().isTrigger = true;
         }
 
-        public void Configure(Func<GameObject, bool> flipMatcher, Action onReached)
+        public void Configure(Func<GameObject, bool> flipMatcher, Action<GameObject> onReached)
         {
             targetFlip = null;
             matchesFlip = flipMatcher;
-            reached = onReached;
+            reached = null;
+            reachedWithObject = onReached;
             completed = false;
             GetComponent<Collider2D>().isTrigger = true;
         }
@@ -42,8 +45,13 @@ namespace Jam24
                 : enteredObject == targetFlip || enteredObject.transform.IsChildOf(targetFlip.transform);
             if (!matches) return;
 
-            completed = true;
-            reached?.Invoke();
+            if (reachedWithObject != null)
+                reachedWithObject.Invoke(enteredObject);
+            else
+            {
+                completed = true;
+                reached?.Invoke();
+            }
         }
     }
 }

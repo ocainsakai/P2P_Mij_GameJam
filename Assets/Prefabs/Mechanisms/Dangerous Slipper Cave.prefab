@@ -149,6 +149,9 @@ MonoBehaviour:
   dangerZone: {fileID: 3002}
   tentacleOrigin: {fileID: 2001}
   flipSpawnPoint: {fileID: 4001}
+  hideFlipUntilPlayerEntry: 1
+  requireJellyfishLaunch: 1
+  minimumImpactSpeed: 3.5
   warningDuration: 1.2
   extendDuration: 0.16
   activeDuration: 0.22

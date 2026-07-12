@@ -12,6 +12,8 @@ namespace Jam24
     [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
     public sealed class JellyfishLauncher : MonoBehaviour
     {
+        private static readonly Dictionary<Rigidbody2D, float> LaunchedBodies = new();
+
         [Header("References")]
         [SerializeField] private Rigidbody2D jellyfishBody;
         [SerializeField] private CircleCollider2D headTrigger;
@@ -31,6 +33,12 @@ namespace Jam24
         private readonly Dictionary<Rigidbody2D, float> nextLaunchTimes = new();
         private Vector2 movementCenter;
         private float movementElapsed;
+
+        public static bool IsLaunching(Rigidbody2D body) =>
+            body != null && LaunchedBodies.ContainsKey(body);
+
+        public static float GetLaunchSpeed(Rigidbody2D body) =>
+            body != null && LaunchedBodies.TryGetValue(body, out float speed) ? speed : 0f;
 
         private sealed class LaunchState
         {
@@ -102,6 +110,7 @@ namespace Jam24
                 Movement = movement
             };
             activeLaunches.Add(launchedBody, state);
+            LaunchedBodies[launchedBody] = bounceDistance / bounceDuration;
 
             if (movement != null) movement.enabled = false;
             launchedBody.linearVelocity = Vector2.zero;
@@ -132,6 +141,7 @@ namespace Jam24
             }
 
             activeLaunches.Remove(launchedBody);
+            LaunchedBodies.Remove(launchedBody);
         }
 
         private static void RestoreBody(Rigidbody2D body, LaunchState state)
@@ -146,7 +156,11 @@ namespace Jam24
 
             foreach (KeyValuePair<Rigidbody2D, LaunchState> pair in activeLaunches)
             {
-                if (pair.Key != null) RestoreBody(pair.Key, pair.Value);
+                if (pair.Key != null)
+                {
+                    RestoreBody(pair.Key, pair.Value);
+                    LaunchedBodies.Remove(pair.Key);
+                }
             }
 
             activeLaunches.Clear();
